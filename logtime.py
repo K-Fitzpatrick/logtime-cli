@@ -25,9 +25,9 @@ def _getTimeEntry(entryLine):
    else:
       return None
 
-def _getLengthBetweenDates(previousTimeEntry, timeEntry):
-   d1 = datetime.strptime(lastTimeEntry, "%I:%M %p")
-   d2 = datetime.strptime(currentTimeEntry, "%I:%M %p")
+def _getLengthBetweenTimes(previousTimeEntry, timeEntry):
+   d1 = datetime.strptime(previousTimeEntry, "%I:%M %p")
+   d2 = datetime.strptime(timeEntry, "%I:%M %p")
    return (d2 - d1).total_seconds() / 3600
 
 #Always reset path to this file
@@ -63,10 +63,10 @@ else:
 
    lastTimeEntry = _getTimeEntry(lines[len(lines)-1])
    if lastTimeEntry:
-      f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenDates(lastTimeEntry, currentTimeEntry)))
+      f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
    else:
       startTime = "09:00 AM"
-      f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenDates(startTime, currentTimeEntry)))
+      f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
 
    f = open(filePath, "a+")
    lines = f.readlines()

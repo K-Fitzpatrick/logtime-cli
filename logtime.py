@@ -15,8 +15,8 @@ import sys
 import re
 from datetime import date, datetime
 
-def _formatEntry(previousTimeEntry, timeEntry, taskEntry):
-   return "|\t"  + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\n"
+def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
+   return "|\t"  + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
 
 def _getTimeEntry(entryLine):
    match = re.findall("([0-1][0-9]:[0-6][0-9] [AP]M)", lines[len(lines)-1])
@@ -25,6 +25,10 @@ def _getTimeEntry(entryLine):
    else:
       return None
 
+def _getLengthBetweenDates(previousTimeEntry, timeEntry):
+   d1 = datetime.strptime(lastTimeEntry, "%I:%M %p")
+   d2 = datetime.strptime(currentTimeEntry, "%I:%M %p")
+   return (d2 - d1).total_seconds() / 3600
 
 #Always reset path to this file
 if os.path.isdir(sys.path[0]):
@@ -47,8 +51,8 @@ if not os.path.isfile(filePath):
    f = open(filePath, "a+")
    f.write("# Notes:\n\n\n\n")
    f.write("# Time log:\n\n")
-   f.write(_formatEntry("Start", "End", "Task"))
-   f.write(_formatEntry("---", "---", "---"))
+   f.write(_formatEntry("Start", "End", "Task", "Length"))
+   f.write(_formatEntry("---", "---", "---", "---"))
    f.close()
 
 if len(sys.argv) < 2:
@@ -59,9 +63,10 @@ else:
 
    lastTimeEntry = _getTimeEntry(lines[len(lines)-1])
    if lastTimeEntry:
-      f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry))
+      f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenDates(lastTimeEntry, currentTimeEntry)))
    else:
-      f.write(_formatEntry("09:00 AM", currentTimeEntry, taskEntry))
+      startTime = "09:00 AM"
+      f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenDates(startTime, currentTimeEntry)))
 
    f = open(filePath, "a+")
    lines = f.readlines()

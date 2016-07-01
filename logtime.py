@@ -13,13 +13,21 @@
 import os
 import sys
 import re
+import string
 from datetime import date, datetime
 
 def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
    return "|\t"  + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
 
-def _getTimeEntry(entryLine):
-   match = re.findall("([0-1][0-9]:[0-6][0-9] [AP]M)", lines[len(lines)-1])
+def _getFirstTimeEntry(entryLine):
+   match = re.findall("([0-1][0-9]:[0-6][0-9] [AP]M)", entryLine)
+   if match:
+      return match[0]
+   else:
+      return None
+
+def _getSecondTimeEntry(entryLine):
+   match = re.findall("([0-1][0-9]:[0-6][0-9] [AP]M)", entryLine)
    if match:
       return match[1]
    else:
@@ -29,6 +37,21 @@ def _getLengthBetweenTimes(previousTimeEntry, timeEntry):
    d1 = datetime.strptime(previousTimeEntry, "%I:%M %p")
    d2 = datetime.strptime(timeEntry, "%I:%M %p")
    return (d2 - d1).total_seconds() / 3600
+
+def _updateLengthBetweenTimes(filePath):
+   f = open(filePath, "r")
+   readLines = f.readlines()
+   f.close()
+   f = open(filePath, "w")
+   for currentLine in readLines:
+      firstTimeEntry = _getFirstTimeEntry(currentLine)
+      if firstTimeEntry:
+         secondTimeEntry = _getSecondTimeEntry(currentLine)
+         items = string.split(currentLine, "|")
+         f.write(_formatEntry(items[1].strip(), items[2].strip(), items[3].strip(), _getLengthBetweenTimes(firstTimeEntry, secondTimeEntry)))
+      else:
+         f.write(currentLine)
+   f.close()
 
 #Always reset path to this file
 if os.path.isdir(sys.path[0]):
@@ -58,10 +81,12 @@ if not os.path.isfile(filePath):
 if len(sys.argv) < 2:
    os.system("start " + filePath)
 else:
+   _updateLengthBetweenTimes(filePath)
+
    f = open(filePath, "a+")
    lines = f.readlines()
 
-   lastTimeEntry = _getTimeEntry(lines[len(lines)-1])
+   lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
    if lastTimeEntry:
       f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
    else:

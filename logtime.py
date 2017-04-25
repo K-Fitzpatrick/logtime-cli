@@ -33,6 +33,23 @@ def _getSecondTimeEntry(entryLine):
    else:
       return None
 
+def _convertTimeOfDay(timeOfDay):
+   if timeOfDay == 'A' or timeOfDay == 'a':
+      return "AM"
+   if timeOfDay == 'P' or timeOfDay == 'p':
+      return "PM"
+   return None
+
+def _getTimeFromArgument(argTime):
+   timeStamp = re.findall("([0-1]*[0-9]:[0-6][0-9])", argTime)
+   timeOfDay = re.findall("[AaPp]", argTime)
+   if not timeStamp or not timeOfDay:
+      return None
+   if _convertTimeOfDay(timeOfDay[0]):
+      return str(timeStamp[0]) + " " + str(_convertTimeOfDay(timeOfDay[0]))
+   else:
+      return None
+
 def _getLengthBetweenTimes(previousTimeEntry, timeEntry):
    d1 = datetime.strptime(previousTimeEntry, "%I:%M %p")
    d2 = datetime.strptime(timeEntry, "%I:%M %p")
@@ -83,16 +100,34 @@ def _getFilePath():
 
    return filePath
 
-filePath = _getFilePath()
+def _printLastLineToConsole(filePath):
+   f = open(filePath, "a+")
+   lines = f.readlines()
+   print lines[len(lines)-1]
+   f.close()
 
-currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
-taskEntry = " ".join(sys.argv[1:])
+
+filePath = _getFilePath()
 
 if len(sys.argv) < 2:
    os.system("start " + filePath)
    exit()
 
 _updateLengthBetweenTimes(filePath)
+
+if len(sys.argv) > 3:
+   startTime = _getTimeFromArgument(sys.argv[1])
+   endTime = _getTimeFromArgument(sys.argv[2])
+   taskEntry = " ".join(sys.argv[3:])
+   if startTime and endTime:
+      f = open(filePath, "a+")
+      f.write(_formatEntry(startTime, endTime, taskEntry, _getLengthBetweenTimes(startTime, endTime)))
+      f.close()
+      _printLastLineToConsole(filePath)
+      exit()
+
+currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
+taskEntry = " ".join(sys.argv[1:])
 
 f = open(filePath, "a+")
 lines = f.readlines()
@@ -103,9 +138,6 @@ if lastTimeEntry:
 else:
    startTime = "07:00 AM"
    f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
-
-f = open(filePath, "a+")
-lines = f.readlines()
-print lines[len(lines)-1]
-
 f.close()
+
+_printLastLineToConsole(filePath)

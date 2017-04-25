@@ -20,14 +20,14 @@ def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
    return "|\t"  + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
 
 def _getFirstTimeEntry(entryLine):
-   match = re.findall("([0-1][0-9]:[0-6][0-9] [AP]M)", entryLine)
+   match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entryLine)
    if match:
       return match[0]
    else:
       return None
 
 def _getSecondTimeEntry(entryLine):
-   match = re.findall("([0-1][0-9]:[0-6][0-9] [AP]M)", entryLine)
+   match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entryLine)
    if match:
       return match[1]
    else:

@@ -115,24 +115,23 @@ if len(sys.argv) < 2:
 
 _updateLengthBetweenTimes(filePath)
 
-if len(sys.argv) > 3:
-   startTime = _getTimeFromArgument(sys.argv[1])
-   endTime = _getTimeFromArgument(sys.argv[2])
-   taskEntry = " ".join(sys.argv[3:])
-   if startTime and endTime:
-      f = open(filePath, "a+")
-      f.write(_formatEntry(startTime, endTime, taskEntry, _getLengthBetweenTimes(startTime, endTime)))
-      f.close()
-      _printLastLineToConsole(filePath)
-      exit()
-
+f = open(filePath, "a+")
+lines = f.readlines()
+lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
 currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
 taskEntry = " ".join(sys.argv[1:])
 
-f = open(filePath, "a+")
-lines = f.readlines()
+if len(sys.argv) > 3:
+   firstTimeArg = _getTimeFromArgument(sys.argv[1])
+   secondTimeArg = _getTimeFromArgument(sys.argv[2])
+   if firstTimeArg and secondTimeArg:
+      lastTimeEntry = firstTimeArg
+      currentTimeEntry = secondTimeArg
+      taskEntry = " ".join(sys.argv[3:])
+   elif firstTimeArg:
+      currentTimeEntry = firstTimeArg
+      taskEntry = " ".join(sys.argv[2:])
 
-lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
 if lastTimeEntry:
    f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
 else:

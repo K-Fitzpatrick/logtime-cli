@@ -53,48 +53,59 @@ def _updateLengthBetweenTimes(filePath):
          f.write(currentLine)
    f.close()
 
-#Always reset path to this file
-if os.path.isdir(sys.path[0]):
-   os.chdir(sys.path[0])
-else:
-   os.chdir(os.path.dirname(sys.path[0]))
+def _getFilePath():
+   #Always reset path to this file
+   if os.path.isdir(sys.path[0]):
+      os.chdir(sys.path[0])
+   else:
+      os.chdir(os.path.dirname(sys.path[0]))
 
-logFileDirectory = "time-log-files"
+   logFileDirectory = "time-log-files"
 
-if not os.path.exists(logFileDirectory):
-   os.mkdir(logFileDirectory)
+   if not os.path.exists(logFileDirectory):
+      os.mkdir(logFileDirectory)
 
-currentDate = date.today().isoformat()
-filePath = logFileDirectory + "/" + currentDate + ".md"
+   currentDate = date.today().isoformat()
+   filePath = logFileDirectory + "/" + currentDate + ".md"
+
+   if not os.path.isfile(filePath):
+      f = open(filePath, "a+")
+      f.write("# Notes:\n\n")
+      f.write("Administration: admin\n")
+      f.write("Work: wk\n")
+      f.write("Side Project: sd\n")
+      f.write("Scrum: scm\n")
+      f.write("Peer Review: pr\n\n")
+      f.write("# Time log:\n\n")
+      f.write(_formatEntry("Start", "End", "Task", "Length"))
+      f.write(_formatEntry("---", "---", "---", "---"))
+      f.close()
+
+   return filePath
+
+filePath = _getFilePath()
 
 currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
 taskEntry = " ".join(sys.argv[1:])
 
-if not os.path.isfile(filePath):
-   f = open(filePath, "a+")
-   f.write("# Notes:\n\n\n\n")
-   f.write("# Time log:\n\n")
-   f.write(_formatEntry("Start", "End", "Task", "Length"))
-   f.write(_formatEntry("---", "---", "---", "---"))
-   f.close()
-
 if len(sys.argv) < 2:
    os.system("start " + filePath)
+   exit()
+
+_updateLengthBetweenTimes(filePath)
+
+f = open(filePath, "a+")
+lines = f.readlines()
+
+lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
+if lastTimeEntry:
+   f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
 else:
-   _updateLengthBetweenTimes(filePath)
+   startTime = "07:00 AM"
+   f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
 
-   f = open(filePath, "a+")
-   lines = f.readlines()
+f = open(filePath, "a+")
+lines = f.readlines()
+print lines[len(lines)-1]
 
-   lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
-   if lastTimeEntry:
-      f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
-   else:
-      startTime = "09:00 AM"
-      f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
-
-   f = open(filePath, "a+")
-   lines = f.readlines()
-   print lines[len(lines)-1]
-
-   f.close()
+f.close()

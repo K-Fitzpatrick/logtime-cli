@@ -16,8 +16,10 @@ import re
 import string
 from datetime import date, datetime
 
+
 def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
-    return "|\t"  + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
+    return "|\t" + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
+
 
 def _getFirstTimeEntry(entryLine):
     match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entryLine)
@@ -26,6 +28,7 @@ def _getFirstTimeEntry(entryLine):
     else:
         return None
 
+
 def _getSecondTimeEntry(entryLine):
     match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entryLine)
     if match:
@@ -33,12 +36,14 @@ def _getSecondTimeEntry(entryLine):
     else:
         return None
 
+
 def _convertTimeOfDay(timeOfDay):
     if timeOfDay == 'A' or timeOfDay == 'a':
         return "AM"
     if timeOfDay == 'P' or timeOfDay == 'p':
         return "PM"
     return None
+
 
 def _getTimeFromArgument(argTime):
     timeStamp = re.findall("([0-1]*[0-9]:[0-6][0-9])", argTime)
@@ -50,10 +55,12 @@ def _getTimeFromArgument(argTime):
     else:
         return None
 
+
 def _getLengthBetweenTimes(previousTimeEntry, timeEntry):
     d1 = datetime.strptime(previousTimeEntry, "%I:%M %p")
     d2 = datetime.strptime(timeEntry, "%I:%M %p")
     return (d2 - d1).total_seconds() / 3600
+
 
 def _updateLengthBetweenTimes(filePath):
     f = open(filePath, "r")
@@ -69,6 +76,7 @@ def _updateLengthBetweenTimes(filePath):
         else:
             f.write(currentLine)
     f.close()
+
 
 def _getFilePath():
     #Always reset path to this file
@@ -99,6 +107,7 @@ def _getFilePath():
         f.close()
 
     return filePath
+
 
 def _printLastLineToConsole(filePath):
     f = open(filePath, "a+")

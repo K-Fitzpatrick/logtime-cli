@@ -121,7 +121,7 @@ lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
 currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
 taskEntry = " ".join(sys.argv[1:])
 
-if len(sys.argv) > 3:
+if len(sys.argv) > 2:
    firstTimeArg = _getTimeFromArgument(sys.argv[1])
    secondTimeArg = _getTimeFromArgument(sys.argv[2])
    if firstTimeArg and secondTimeArg:

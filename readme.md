@@ -4,8 +4,9 @@ Simple CLI time logging application.
 Meant to track what you just finished working on, and deliver readable text output.
 
 ## Installation
-1. Put `logtime.py` on your path
-1. Add `alias lt="logtime.py` to your `~/.bashrc`
+```bash
+pip install logtime-cli
+```
 
 ## Usage
 To log time:

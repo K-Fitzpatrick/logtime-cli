@@ -1,15 +1,5 @@
 #!/usr/bin/env python
 
-
-# Usage
-#
-# 1. Put this file on your path.
-# 1. Add `alias lt="logtime.py` to your `bash.bashrc` file
-#
-# To log time: Type `lt "thing"` into your bash shell
-# To open your daily log file:  type or `lt`
-
-
 import os
 import sys
 import re

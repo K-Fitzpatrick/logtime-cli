@@ -85,12 +85,7 @@ def _getFilePath():
 
     if not os.path.isfile(filePath):
         f = open(filePath, "a+")
-        f.write("# Notes:\n\n")
-        f.write("Administration: admin\n")
-        f.write("Work: wk\n")
-        f.write("Side Project: sd\n")
-        f.write("Scrum: scm\n")
-        f.write("Peer Review: pr\n\n")
+        f.write("# Notes:\n\n\n")
         f.write("# Time log:\n\n")
         f.write(_formatEntry("Start", "End", "Task", "Length"))
         f.write(_formatEntry("---", "---", "---", "---"))

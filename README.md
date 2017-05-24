@@ -3,6 +3,7 @@
 ## logtime.py
 
 Simple CLI time logging application.
+
 Meant to track what you just finished working on, and deliver readable text output.
 
 ## Installation

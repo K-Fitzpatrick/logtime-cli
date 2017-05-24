@@ -1,3 +1,5 @@
+[![PyPI](https://img.shields.io/pypi/v/logtime-cli.svg)](https://pypi.python.org/pypi/logtime-cli)
+
 ## logtime.py
 
 Simple CLI time logging application.

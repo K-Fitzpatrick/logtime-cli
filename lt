@@ -33,6 +33,10 @@ def cli(entry):
     \b
     lt python docs
     lt john: discuss python docs
+
+    \b
+    To open today's logfile and exit, use:
+    lt
     """
     if not entry:
         OpenLogfileForDate(date.today())

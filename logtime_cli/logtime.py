@@ -67,7 +67,7 @@ def _updateLengthBetweenTimes(filePath):
     f.close()
 
 
-def _getFilePath():
+def _getFilePathForDate(date):
     #Always reset path to this file
     if os.path.isdir(sys.path[0]):
         os.chdir(sys.path[0])
@@ -79,7 +79,7 @@ def _getFilePath():
     if not os.path.exists(logFileDirectory):
         os.mkdir(logFileDirectory)
 
-    currentDate = date.today().isoformat()
+    currentDate = date.isoformat()
     filePath = logFileDirectory + "/" + currentDate + ".md"
 
     if not os.path.isfile(filePath):
@@ -101,10 +101,9 @@ def _printLastLineToConsole(filePath):
 
 
 def LogTime():
-    filePath = _getFilePath()
-
     if len(sys.argv) < 2:
-        os.system("start " + filePath)
+        today = date.today()
+        os.system("start " + _getFilePathForDate(today))
         exit()
 
     if sys.argv[1] == '-p':
@@ -112,12 +111,11 @@ def LogTime():
         if len(sys.argv) > 2 and sys.argv[2].isdigit():
             numberOfDaysAgo = int(sys.argv[2])
 
-        logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
-
-        previousDay = (date.today() - timedelta(days=numberOfDaysAgo)).isoformat()
-        previousDayFilePath = logFileDirectory + "/" + previousDay + ".md"
-        os.system("start " + previousDayFilePath)
+        previousDay = (date.today() - timedelta(days=numberOfDaysAgo))
+        os.system("start " + _getFilePathForDate(previousDay))
         exit()
+
+    filePath = _getFilePathForDate(date.today())
 
     _updateLengthBetweenTimes(filePath)
 

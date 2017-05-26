@@ -21,6 +21,11 @@ To open your daily log file:
 ```
 lt
 ```
+To open a previous daily log file:
+```
+lt -p
+lt -p 2 //opens daily log from 2 days ago
+```
 
 To log time with an end date:
 ```

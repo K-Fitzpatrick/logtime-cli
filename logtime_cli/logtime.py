@@ -106,10 +106,6 @@ def OpenLogfileToday():
 
 
 def LogTime(taskEntry):
-    if len(sys.argv) < 2:
-        OpenLogfileToday()
-        exit()
-
     if sys.argv[1] == '-p':
         numberOfDaysAgo = 1
         if len(sys.argv) > 2 and sys.argv[2].isdigit():

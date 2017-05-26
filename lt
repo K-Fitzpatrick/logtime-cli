@@ -3,6 +3,7 @@
 import click
 from datetime import date, timedelta
 from logtime_cli.logtime import LogTime, OpenLogfileForDate
+from logtime_cli.logtime_config import OpenUserConfig
 
 
 def _openPrevious(ctx, param, value):
@@ -21,9 +22,17 @@ def _openYesterday(ctx, param, value):
     ctx.exit()
 
 
+def _openUserConfig(ctx, param, value):
+    if not value:
+        return
+    OpenUserConfig()
+    ctx.exit()
+
+
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('--previous', '-p', type=int, callback=_openPrevious, expose_value=False, is_eager=True, help='Open a logfile X days in the past and exit.')
 @click.option('--yesterday', '-y', is_flag=True, callback=_openYesterday, expose_value=False, is_eager=True, help='Open yesterdays logfile and exit. Alias for `-p 1`.')
+@click.option('--config', is_flag=True, callback=_openUserConfig, expose_value=False, is_eager=True, help='Open user config file and exit.')
 @click.argument('entry', nargs=-1)
 def cli(entry):
     """Log what you just finished doing.

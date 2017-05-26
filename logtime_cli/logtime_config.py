@@ -15,3 +15,17 @@ def GetOption(section, name):
     if _userConfig.has_option(section, name):
         return _userConfig.get(section, name)
     return _defaultConfig.get(section, name)
+
+
+def _createUserConfig():
+    cf = open(USER_CONFIG_FILE, 'w')
+    _defaultConfig.write(cf)
+    cf.close()
+    _userConfig.read(USER_CONFIG_FILE)
+
+
+def OpenUserConfig():
+    if not path.isfile(USER_CONFIG_FILE):
+        _createUserConfig()
+    system("start " + USER_CONFIG_FILE)
+    exit()

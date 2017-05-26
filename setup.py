@@ -10,4 +10,7 @@ setup(
     author_email='kyle.a.fitzpatrick@gmail.com',
     url='https://github.com/K-Fitzpatrick/logtime-cli',
     include_package_data=True,
+    install_requires=[
+        'click==6.7'
+    ],
 )

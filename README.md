@@ -11,6 +11,11 @@ Meant to track what you just finished working on, and deliver readable text outp
 pip install logtime-cli
 ```
 
+## Help
+```
+lt --help
+```
+
 ## Usage
 To log time:
 ```

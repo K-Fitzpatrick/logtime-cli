@@ -5,6 +5,7 @@ import sys
 import re
 import string
 from datetime import date, datetime
+from logtime_cli.logtime_config import GetOption
 
 
 def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
@@ -75,7 +76,7 @@ def _getFilePath():
     else:
         os.chdir(os.path.dirname(sys.path[0]))
 
-    logFileDirectory = "time-log-files"
+    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
 
     if not os.path.exists(logFileDirectory):
         os.mkdir(logFileDirectory)
@@ -129,7 +130,7 @@ if len(sys.argv) > 2:
 if lastTimeEntry:
     f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
 else:
-    startTime = "07:00 AM"
+    startTime = GetOption("DEFAULT", "new_day_start_time")
     f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
 f.close()
 

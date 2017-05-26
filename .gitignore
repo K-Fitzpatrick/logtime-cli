@@ -1,3 +1,7 @@
+# Local User Config
+logtime_cli/config/config-user.ini
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

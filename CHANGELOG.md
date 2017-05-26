@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- CLI argument `-p` to open yesterday's log file
+- CLI argument `-p X` to open a log file `X` days in the past
 
 ## 0.4.1 - 2017-05-26
 ### Added

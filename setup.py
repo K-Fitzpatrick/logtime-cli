@@ -9,4 +9,5 @@ setup(
     author='Kyle Fitzpatrick',
     author_email='kyle.a.fitzpatrick@gmail.com',
     url='https://github.com/K-Fitzpatrick/logtime-cli',
+    include_package_data=True,
 )

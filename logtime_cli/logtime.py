@@ -106,15 +106,6 @@ def OpenLogfileForDate(dateToOpen):
 
 
 def LogTime(taskEntry):
-    if sys.argv[1] == '-p':
-        numberOfDaysAgo = 1
-        if len(sys.argv) > 2 and sys.argv[2].isdigit():
-            numberOfDaysAgo = int(sys.argv[2])
-
-        previousDate = (date.today() - timedelta(days=numberOfDaysAgo))
-        OpenLogfileForDate(previousDate)
-        exit()
-
     filePath = _getFilePathForDate(date.today())
 
     _updateLengthBetweenTimes(filePath)

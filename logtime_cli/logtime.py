@@ -101,8 +101,7 @@ def _printLastLineToConsole(filePath):
 
 
 def OpenLogfileForDate(dateToOpen):
-    filePath = _getFilePathForDate(dateToOpen)
-    os.system("start " + filePath)
+    os.startfile(_getFilePathForDate(dateToOpen))
 
 
 def LogTime(taskEntry):

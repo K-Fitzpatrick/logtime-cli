@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-## 0.4.0 - 2017-05-26
+## 0.4.1 - 2017-05-26
 ### Added
 - A config file
 - Configurable new_day_start_time

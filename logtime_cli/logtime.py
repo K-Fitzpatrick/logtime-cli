@@ -113,7 +113,7 @@ if sys.argv[1] == '-p':
 
     logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
 
-    previousDay = (date.today() - timedelta(days = numberOfDaysAgo)).isoformat()
+    previousDay = (date.today() - timedelta(days=numberOfDaysAgo)).isoformat()
     previousDayFilePath = logFileDirectory + "/" + previousDay + ".md"
     os.system("start " + previousDayFilePath)
     exit()

@@ -90,7 +90,7 @@ def _getFilePathForDate(date):
         f.write(_formatEntry("---", "---", "---", "---"))
         f.close()
 
-    return filePath
+    return os.path.abspath(filePath)
 
 
 def _printLastLineToConsole(filePath):

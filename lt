@@ -4,10 +4,8 @@ import click
 from datetime import date
 from logtime_cli.logtime import LogTime, OpenLogfileForDate
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-
-@click.command(context_settings=CONTEXT_SETTINGS)
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.argument('entry', nargs=-1)
 def cli(entry):
     """Log what you just finished doing.

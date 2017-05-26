@@ -19,6 +19,8 @@ def cli(entry):
     """
     if not entry:
         OpenLogfileToday()
+    else:
+        LogTime(' '.join(entry))
 
 if __name__ == '__main__':
     cli()

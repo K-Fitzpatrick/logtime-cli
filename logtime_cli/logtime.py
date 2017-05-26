@@ -105,7 +105,7 @@ def OpenLogfileToday():
     os.system("start " + filePath)
 
 
-def LogTime():
+def LogTime(taskEntry):
     if len(sys.argv) < 2:
         OpenLogfileToday()
         exit()
@@ -127,7 +127,6 @@ def LogTime():
     lines = f.readlines()
     lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
     currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
-    taskEntry = " ".join(sys.argv[1:])
 
     if len(sys.argv) > 2:
         firstTimeArg = _getTimeFromArgument(sys.argv[1])

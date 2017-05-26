@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import click
-from logtime_cli.logtime import LogTime, OpenLogfileToday
+from datetime import date
+from logtime_cli.logtime import LogTime, OpenLogfileForDate
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -18,7 +19,7 @@ def cli(entry):
     lt john: discuss python docs
     """
     if not entry:
-        OpenLogfileToday()
+        OpenLogfileForDate(date.today())
     else:
         LogTime(' '.join(entry))
 

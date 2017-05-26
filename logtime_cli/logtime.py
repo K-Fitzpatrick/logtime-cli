@@ -100,8 +100,8 @@ def _printLastLineToConsole(filePath):
     f.close()
 
 
-def OpenLogfileToday():
-    filePath = _getFilePathForDate(date.today())
+def OpenLogfileForDate(dateToOpen):
+    filePath = _getFilePathForDate(dateToOpen)
     os.system("start " + filePath)
 
 
@@ -111,8 +111,8 @@ def LogTime(taskEntry):
         if len(sys.argv) > 2 and sys.argv[2].isdigit():
             numberOfDaysAgo = int(sys.argv[2])
 
-        previousDay = (date.today() - timedelta(days=numberOfDaysAgo))
-        os.system("start " + _getFilePathForDate(previousDay))
+        previousDate = (date.today() - timedelta(days=numberOfDaysAgo))
+        OpenLogfileForDate(previousDate)
         exit()
 
     filePath = _getFilePathForDate(date.today())

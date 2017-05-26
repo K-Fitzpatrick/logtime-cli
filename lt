@@ -76,7 +76,7 @@ def _getFilePath():
     else:
         os.chdir(os.path.dirname(sys.path[0]))
 
-    logFileDirectory = "time-log-files"
+    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
 
     if not os.path.exists(logFileDirectory):
         os.mkdir(logFileDirectory)

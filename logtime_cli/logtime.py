@@ -100,10 +100,14 @@ def _printLastLineToConsole(filePath):
     f.close()
 
 
+def OpenLogfileToday():
+    filePath = _getFilePathForDate(date.today())
+    os.system("start " + filePath)
+
+
 def LogTime():
     if len(sys.argv) < 2:
-        today = date.today()
-        os.system("start " + _getFilePathForDate(today))
+        OpenLogfileToday()
         exit()
 
     if sys.argv[1] == '-p':

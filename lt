@@ -4,7 +4,7 @@ import os
 import sys
 import re
 import string
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from logtime_cli.logtime_config import GetOption
 
 
@@ -107,6 +107,15 @@ filePath = _getFilePath()
 if len(sys.argv) < 2:
     os.system("start " + filePath)
     exit()
+
+if len(sys.argv) == 2 and sys.argv[1] == '-p':
+    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
+
+    yesterday = (date.today() - timedelta(days = 1)).isoformat()
+    yesterdayFilePath = logFileDirectory + "/" + yesterday + ".md"
+    os.system("start " + yesterdayFilePath)
+    exit()
+
 
 _updateLengthBetweenTimes(filePath)
 

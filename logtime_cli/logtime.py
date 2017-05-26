@@ -100,49 +100,49 @@ def _printLastLineToConsole(filePath):
     f.close()
 
 
-filePath = _getFilePath()
+def LogTime():
+    filePath = _getFilePath()
 
-if len(sys.argv) < 2:
-    os.system("start " + filePath)
-    exit()
+    if len(sys.argv) < 2:
+        os.system("start " + filePath)
+        exit()
 
-if sys.argv[1] == '-p':
-    numberOfDaysAgo = 1
-    if len(sys.argv) > 2 and sys.argv[2].isdigit():
-        numberOfDaysAgo = int(sys.argv[2])
+    if sys.argv[1] == '-p':
+        numberOfDaysAgo = 1
+        if len(sys.argv) > 2 and sys.argv[2].isdigit():
+            numberOfDaysAgo = int(sys.argv[2])
 
-    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
+        logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
 
-    previousDay = (date.today() - timedelta(days=numberOfDaysAgo)).isoformat()
-    previousDayFilePath = logFileDirectory + "/" + previousDay + ".md"
-    os.system("start " + previousDayFilePath)
-    exit()
+        previousDay = (date.today() - timedelta(days=numberOfDaysAgo)).isoformat()
+        previousDayFilePath = logFileDirectory + "/" + previousDay + ".md"
+        os.system("start " + previousDayFilePath)
+        exit()
 
+    _updateLengthBetweenTimes(filePath)
 
-_updateLengthBetweenTimes(filePath)
+    f = open(filePath, "a+")
+    lines = f.readlines()
+    lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
+    currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
+    taskEntry = " ".join(sys.argv[1:])
 
-f = open(filePath, "a+")
-lines = f.readlines()
-lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
-currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
-taskEntry = " ".join(sys.argv[1:])
+    if len(sys.argv) > 2:
+        firstTimeArg = _getTimeFromArgument(sys.argv[1])
+        secondTimeArg = _getTimeFromArgument(sys.argv[2])
+        if firstTimeArg and secondTimeArg:
+            lastTimeEntry = firstTimeArg
+            currentTimeEntry = secondTimeArg
+            taskEntry = " ".join(sys.argv[3:])
+        elif firstTimeArg:
+            currentTimeEntry = firstTimeArg
+            taskEntry = " ".join(sys.argv[2:])
 
-if len(sys.argv) > 2:
-    firstTimeArg = _getTimeFromArgument(sys.argv[1])
-    secondTimeArg = _getTimeFromArgument(sys.argv[2])
-    if firstTimeArg and secondTimeArg:
-        lastTimeEntry = firstTimeArg
-        currentTimeEntry = secondTimeArg
-        taskEntry = " ".join(sys.argv[3:])
-    elif firstTimeArg:
-        currentTimeEntry = firstTimeArg
-        taskEntry = " ".join(sys.argv[2:])
+    if lastTimeEntry:
+        f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
+    else:
+        startTime = GetOption("DEFAULT", "new_day_start_time")
+        f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
+    f.close()
 
-if lastTimeEntry:
-    f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))
-else:
-    startTime = GetOption("DEFAULT", "new_day_start_time")
-    f.write(_formatEntry(startTime, currentTimeEntry, taskEntry, _getLengthBetweenTimes(startTime, currentTimeEntry)))
-f.close()
-
-_printLastLineToConsole(filePath)
+    _printLastLineToConsole(filePath)

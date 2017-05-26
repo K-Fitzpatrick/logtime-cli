@@ -32,3 +32,11 @@ To log time with a start and end date:
 ```
 lt 07:15a 07:30a what I did during that time
 ```
+
+## Configuration
+In your installation directory (with pip, `C:\<PATH_TO_PYTHON>\Lib\site-packages\logtime-cli`), you'll find a file `config/config-default.ini`.
+
+Copy that file to `config/config-user.ini`, and change that file as needed.
+
+- **`new_day_start_time`** affects what time each day is assumed to start at for the first call of `lt something`. Example: `10:00 AM`
+- **`logfile_directory`** is where the logtime files get stored. Works on relative and absolute paths. Example: `C:\...\Dropbox\logtime-logs`

@@ -36,14 +36,22 @@ def _convertTimeOfDay(timeOfDay):
 
 
 def _getTimeFromArgument(argTime):
-    timeStamp = re.findall("([0-1]*[0-9]:[0-6][0-9])", argTime)
-    timeOfDay = re.findall("[AaPp]", argTime)
-    if not timeStamp or not timeOfDay:
-        return None
-    if _convertTimeOfDay(timeOfDay[0]):
-        return str(timeStamp[0]) + " " + str(_convertTimeOfDay(timeOfDay[0]))
-    else:
-        return None
+    military_time_match = re.search('^([0-1][0-9]|[2][0-3]):?([0-6][0-9])$', argTime)
+    standard_time_match = re.search('^([0][0-9]|[1][0-2]):?([0-6][0-9])([AaPp])$', argTime)
+
+    time_match = military_time_match or standard_time_match
+    if not (time_match):
+        raise ValueError('"' + argTime + '" is not a valid time')
+
+    hours = time_match.group(1)
+    minutes = time_match.group(2)
+    timeString = str(hours) + str(minutes)
+
+    if military_time_match:
+        return datetime.strptime(timeString, "%H%M").strftime(OUTPUT_TIME_FORMAT)
+    elif standard_time_match:
+        meridiem = standard_time_match.group(3)
+        return datetime.strptime(timeString + _convertTimeOfDay(meridiem), "%I%M%p").strftime(OUTPUT_TIME_FORMAT)
 
 
 def _getLengthBetweenTimes(previousTimeEntry, timeEntry):

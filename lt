@@ -44,7 +44,9 @@ def _openLogfileDirectory(ctx, param, value):
 @click.option('--config', is_flag=True, callback=_openUserConfig, expose_value=False, is_eager=True, help='Open user config file and exit.')
 @click.option('--dir', is_flag=True, callback=_openLogfileDirectory, expose_value=False, is_eager=True, help='Open logfile directory and exit.')
 @click.argument('entry', nargs=-1)
-def cli(entry):
+@click.option('--start', '-s', help='Choose a start time for this entry.')
+@click.option('--end', '-e', help='Choose an end time for this entry.')
+def cli(entry, start, end):
     """Log what you just finished doing.
 
     Examples:
@@ -60,7 +62,7 @@ def cli(entry):
     if not entry:
         OpenLogfileForDate(date.today())
     else:
-        LogTime(' '.join(entry))
+        LogTime(' '.join(entry), start, end)
 
 if __name__ == '__main__':
     cli()

@@ -104,7 +104,7 @@ def OpenLogfileForDate(dateToOpen):
     os.startfile(_getFilePathForDate(dateToOpen))
 
 
-def LogTime(taskEntry):
+def LogTime(taskEntry, start, end):
     filePath = _getFilePathForDate(date.today())
 
     _updateLengthBetweenTimes(filePath)
@@ -114,16 +114,10 @@ def LogTime(taskEntry):
     lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
     currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
 
-    if len(sys.argv) > 2:
-        firstTimeArg = _getTimeFromArgument(sys.argv[1])
-        secondTimeArg = _getTimeFromArgument(sys.argv[2])
-        if firstTimeArg and secondTimeArg:
-            lastTimeEntry = firstTimeArg
-            currentTimeEntry = secondTimeArg
-            taskEntry = " ".join(sys.argv[3:])
-        elif firstTimeArg:
-            currentTimeEntry = firstTimeArg
-            taskEntry = " ".join(sys.argv[2:])
+    if start:
+        lastTimeEntry = _getTimeFromArgument(start)
+    if end:
+        currentTimeEntry = _getTimeFromArgument(end)
 
     if lastTimeEntry:
         f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))

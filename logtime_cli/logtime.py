@@ -5,6 +5,7 @@ import string
 from datetime import date, datetime, timedelta
 from logtime_cli.logtime_config import GetOption
 
+OUTPUT_TIME_FORMAT = '%I:%M %p'
 
 def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
     return "|\t" + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
@@ -46,8 +47,8 @@ def _getTimeFromArgument(argTime):
 
 
 def _getLengthBetweenTimes(previousTimeEntry, timeEntry):
-    d1 = datetime.strptime(previousTimeEntry, "%I:%M %p")
-    d2 = datetime.strptime(timeEntry, "%I:%M %p")
+    d1 = datetime.strptime(previousTimeEntry, OUTPUT_TIME_FORMAT)
+    d2 = datetime.strptime(timeEntry, OUTPUT_TIME_FORMAT)
     return (d2 - d1).total_seconds() / 3600
 
 
@@ -112,7 +113,7 @@ def LogTime(taskEntry, start, end):
     f = open(filePath, "a+")
     lines = f.readlines()
     lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
-    currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
+    currentTimeEntry = datetime.today().time().strftime(OUTPUT_TIME_FORMAT)
 
     if start:
         lastTimeEntry = _getTimeFromArgument(start)

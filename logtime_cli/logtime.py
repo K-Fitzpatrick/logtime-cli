@@ -100,7 +100,7 @@ def _getFilePathForDate(date):
     logFileDirectory = _getLogFileDirectory()
 
     currentDate = date.isoformat()
-    filePath = logFileDirectory + "/" + currentDate + ".md"
+    filePath = os.path.join(logFileDirectory, currentDate + ".md")
 
     return os.path.abspath(filePath)
 

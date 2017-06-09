@@ -84,6 +84,11 @@ def _createNewLogFile(filePath):
     f.write(_formatEntry("---", "---", "---", "---"))
     f.close()
 
+def _getLogFileDirectory():
+    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
+    if not os.path.exists(logFileDirectory):
+        os.mkdir(logFileDirectory)
+    return logFileDirectory
 
 def _getFilePathForDate(date):
     #Always reset path to this file
@@ -92,10 +97,7 @@ def _getFilePathForDate(date):
     else:
         os.chdir(os.path.dirname(sys.path[0]))
 
-    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
-
-    if not os.path.exists(logFileDirectory):
-        os.mkdir(logFileDirectory)
+    logFileDirectory = _getLogFileDirectory()
 
     currentDate = date.isoformat()
     filePath = logFileDirectory + "/" + currentDate + ".md"

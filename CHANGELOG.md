@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## Added
+- Option to leave out colon for `--start/--end` options: `01:15p` and `0115p` are the same
+- Option to use military time for `--start/--end` options: `0115p` and `1315` are the same
+
+### Changed
+- CLI argument `--end` allows selecting an end-time for an entry, and replaces previous behavior of `lt 12:15 entry`
+- CLI argument `--start` allows selecting a start-time for an entry, and replaces previous behavior of first argument in `lt 12:00p 12:15p entry`
 
 ## 0.5.0 - 2017-05-26
 ### Added

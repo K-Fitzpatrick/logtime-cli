@@ -34,13 +34,15 @@ lt -p 2 //opens daily log from 2 days ago
 
 To log time with an end date:
 ```
-lt 07:15a what I did during that time
-lt 12:15p what I did during that time
+lt -e 07:15p what I did during that time
+lt -e 19:15 what I did during that time
+lt -e 0715p what I did during that time
+lt -e 1915 what I did during that time
 ```
 
 To log time with a start and end date:
 ```
-lt 07:15a 07:30a what I did during that time
+lt -s 07:15a -e 07:30a what I did during that time
 ```
 
 ## Configuration

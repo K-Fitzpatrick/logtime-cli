@@ -5,6 +5,7 @@ import string
 from datetime import date, datetime, timedelta
 from logtime_cli.logtime_config import GetOption
 
+OUTPUT_TIME_FORMAT = '%I:%M %p'
 
 def _formatEntry(previousTimeEntry, timeEntry, taskEntry, taskLength):
     return "|\t" + str(previousTimeEntry) + "\t|\t" + str(timeEntry) + "\t|\t" + str(taskEntry) + "\t|\t" + str(taskLength) + "\t|\n"
@@ -35,19 +36,27 @@ def _convertTimeOfDay(timeOfDay):
 
 
 def _getTimeFromArgument(argTime):
-    timeStamp = re.findall("([0-1]*[0-9]:[0-6][0-9])", argTime)
-    timeOfDay = re.findall("[AaPp]", argTime)
-    if not timeStamp or not timeOfDay:
-        return None
-    if _convertTimeOfDay(timeOfDay[0]):
-        return str(timeStamp[0]) + " " + str(_convertTimeOfDay(timeOfDay[0]))
-    else:
-        return None
+    military_time_match = re.search('^([0-1][0-9]|[2][0-3]):?([0-6][0-9])$', argTime)
+    standard_time_match = re.search('^([0][0-9]|[1][0-2]):?([0-6][0-9])([AaPp])$', argTime)
+
+    time_match = military_time_match or standard_time_match
+    if not (time_match):
+        raise ValueError('"' + argTime + '" is not a valid time')
+
+    hours = time_match.group(1)
+    minutes = time_match.group(2)
+    timeString = str(hours) + str(minutes)
+
+    if military_time_match:
+        return datetime.strptime(timeString, "%H%M").strftime(OUTPUT_TIME_FORMAT)
+    elif standard_time_match:
+        meridiem = standard_time_match.group(3)
+        return datetime.strptime(timeString + _convertTimeOfDay(meridiem), "%I%M%p").strftime(OUTPUT_TIME_FORMAT)
 
 
 def _getLengthBetweenTimes(previousTimeEntry, timeEntry):
-    d1 = datetime.strptime(previousTimeEntry, "%I:%M %p")
-    d2 = datetime.strptime(timeEntry, "%I:%M %p")
+    d1 = datetime.strptime(previousTimeEntry, OUTPUT_TIME_FORMAT)
+    d2 = datetime.strptime(timeEntry, OUTPUT_TIME_FORMAT)
     return (d2 - d1).total_seconds() / 3600
 
 
@@ -104,7 +113,7 @@ def OpenLogfileForDate(dateToOpen):
     os.startfile(_getFilePathForDate(dateToOpen))
 
 
-def LogTime(taskEntry):
+def LogTime(taskEntry, start, end):
     filePath = _getFilePathForDate(date.today())
 
     _updateLengthBetweenTimes(filePath)
@@ -112,18 +121,12 @@ def LogTime(taskEntry):
     f = open(filePath, "a+")
     lines = f.readlines()
     lastTimeEntry = _getSecondTimeEntry(lines[len(lines)-1])
-    currentTimeEntry = datetime.today().time().strftime("%I:%M %p")
+    currentTimeEntry = datetime.today().time().strftime(OUTPUT_TIME_FORMAT)
 
-    if len(sys.argv) > 2:
-        firstTimeArg = _getTimeFromArgument(sys.argv[1])
-        secondTimeArg = _getTimeFromArgument(sys.argv[2])
-        if firstTimeArg and secondTimeArg:
-            lastTimeEntry = firstTimeArg
-            currentTimeEntry = secondTimeArg
-            taskEntry = " ".join(sys.argv[3:])
-        elif firstTimeArg:
-            currentTimeEntry = firstTimeArg
-            taskEntry = " ".join(sys.argv[2:])
+    if start:
+        lastTimeEntry = _getTimeFromArgument(start)
+    if end:
+        currentTimeEntry = _getTimeFromArgument(end)
 
     if lastTimeEntry:
         f.write(_formatEntry(lastTimeEntry, currentTimeEntry, taskEntry, _getLengthBetweenTimes(lastTimeEntry, currentTimeEntry)))

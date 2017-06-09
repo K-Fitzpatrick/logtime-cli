@@ -102,9 +102,6 @@ def _getFilePathForDate(date):
     currentDate = date.isoformat()
     filePath = logFileDirectory + "/" + currentDate + ".md"
 
-    if not os.path.isfile(filePath):
-        _createNewLogFile(filePath)
-
     return os.path.abspath(filePath)
 
 
@@ -115,12 +112,20 @@ def _printLastLineToConsole(filePath):
     f.close()
 
 
-def OpenLogfileForDate(dateToOpen):
-    os.startfile(_getFilePathForDate(dateToOpen))
+def OpenLogfileForDate(dateToOpen, canCreate=False):
+    filePath = _getFilePathForDate(dateToOpen)
+
+    if canCreate and not os.path.isfile(filePath):
+        _createNewLogFile(filePath)
+
+    os.startfile(filePath)
 
 
 def LogTime(taskEntry, start, end):
     filePath = _getFilePathForDate(date.today())
+
+    if not os.path.isfile(filePath):
+        _createNewLogFile(filePath)
 
     _updateLengthBetweenTimes(filePath)
 

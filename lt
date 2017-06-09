@@ -18,9 +18,7 @@ def _openPrevious(ctx, param, value):
 def _openYesterday(ctx, param, value):
     if not value:
         return
-    previousDate = (date.today() - timedelta(days=1))
-    OpenLogfileForDate(previousDate)
-    ctx.exit()
+    _openPrevious(ctx, param, 1)
 
 
 def _openUserConfig(ctx, param, value):

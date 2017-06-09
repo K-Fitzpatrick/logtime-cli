@@ -76,6 +76,15 @@ def _updateLengthBetweenTimes(filePath):
     f.close()
 
 
+def _createNewLogFile(filePath):
+    f = open(filePath, "a+")
+    f.write("# Notes:\n\n\n")
+    f.write("# Time log:\n\n")
+    f.write(_formatEntry("Start", "End", "Task", "Length"))
+    f.write(_formatEntry("---", "---", "---", "---"))
+    f.close()
+
+
 def _getFilePathForDate(date):
     #Always reset path to this file
     if os.path.isdir(sys.path[0]):
@@ -92,12 +101,7 @@ def _getFilePathForDate(date):
     filePath = logFileDirectory + "/" + currentDate + ".md"
 
     if not os.path.isfile(filePath):
-        f = open(filePath, "a+")
-        f.write("# Notes:\n\n\n")
-        f.write("# Time log:\n\n")
-        f.write(_formatEntry("Start", "End", "Task", "Length"))
-        f.write(_formatEntry("---", "---", "---", "---"))
-        f.close()
+        _createNewLogFile(filePath)
 
     return os.path.abspath(filePath)
 

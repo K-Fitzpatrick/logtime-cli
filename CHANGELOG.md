@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - CLI argument `--end` allows selecting an end-time for an entry, and replaces previous behavior of `lt 12:15 entry`
 - CLI argument `--start` allows selecting a start-time for an entry, and replaces previous behavior of first argument in `lt 12:00p 12:15p entry`
 
+## 0.6.0 - 2017-06-10
+## Added
+- Some scripts to automate releases
+
 ## 0.5.0 - 2017-05-26
 ### Added
 - CLI help: `--help` or `-h`

@@ -11,16 +11,18 @@ def _openPrevious(ctx, param, value):
     if not value:
         return
     previousDate = (date.today() - timedelta(days=value))
-    OpenLogfileForDate(previousDate)
+    try:
+        OpenLogfileForDate(previousDate)
+    except WindowsError as e:
+        print "No logfile exists for " + str(previousDate) + "."
+
     ctx.exit()
 
 
 def _openYesterday(ctx, param, value):
     if not value:
         return
-    previousDate = (date.today() - timedelta(days=1))
-    OpenLogfileForDate(previousDate)
-    ctx.exit()
+    _openPrevious(ctx, param, 1)
 
 
 def _openUserConfig(ctx, param, value):
@@ -60,7 +62,7 @@ def cli(entry, start, end):
     lt
     """
     if not entry:
-        OpenLogfileForDate(date.today())
+        OpenLogfileForDate(date.today(), canCreate=True)
     else:
         LogTime(' '.join(entry), start, end)
 

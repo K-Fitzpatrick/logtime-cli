@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - CLI argument `--end` allows selecting an end-time for an entry, and replaces previous behavior of `lt 12:15 entry`
 - CLI argument `--start` allows selecting a start-time for an entry, and replaces previous behavior of first argument in `lt 12:00p 12:15p entry`
+- CLI argument `--previous` no longer creates a logfile that doesn't exist; instead, it displays a message to the user
 
 ## 0.6.0 - 2017-06-10
 ## Added

@@ -76,6 +76,22 @@ def _updateLengthBetweenTimes(filePath):
     f.close()
 
 
+def _createNewLogFile(filePath):
+    f = open(filePath, "a+")
+    f.write("# Notes:\n\n\n")
+    f.write("# Time log:\n\n")
+    f.write(_formatEntry("Start", "End", "Task", "Length"))
+    f.write(_formatEntry("---", "---", "---", "---"))
+    f.close()
+
+
+def _getLogFileDirectory():
+    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
+    if not os.path.exists(logFileDirectory):
+        os.mkdir(logFileDirectory)
+    return logFileDirectory
+
+
 def _getFilePathForDate(date):
     #Always reset path to this file
     if os.path.isdir(sys.path[0]):
@@ -83,21 +99,10 @@ def _getFilePathForDate(date):
     else:
         os.chdir(os.path.dirname(sys.path[0]))
 
-    logFileDirectory = GetOption('DEFAULT', 'logfile_directory')
-
-    if not os.path.exists(logFileDirectory):
-        os.mkdir(logFileDirectory)
+    logFileDirectory = _getLogFileDirectory()
 
     currentDate = date.isoformat()
-    filePath = logFileDirectory + "/" + currentDate + ".md"
-
-    if not os.path.isfile(filePath):
-        f = open(filePath, "a+")
-        f.write("# Notes:\n\n\n")
-        f.write("# Time log:\n\n")
-        f.write(_formatEntry("Start", "End", "Task", "Length"))
-        f.write(_formatEntry("---", "---", "---", "---"))
-        f.close()
+    filePath = os.path.join(logFileDirectory, currentDate + ".md")
 
     return os.path.abspath(filePath)
 
@@ -109,12 +114,20 @@ def _printLastLineToConsole(filePath):
     f.close()
 
 
-def OpenLogfileForDate(dateToOpen):
-    os.startfile(_getFilePathForDate(dateToOpen))
+def OpenLogfileForDate(dateToOpen, canCreate=False):
+    filePath = _getFilePathForDate(dateToOpen)
+
+    if canCreate and not os.path.isfile(filePath):
+        _createNewLogFile(filePath)
+
+    os.startfile(filePath)
 
 
 def LogTime(taskEntry, start, end):
     filePath = _getFilePathForDate(date.today())
+
+    if not os.path.isfile(filePath):
+        _createNewLogFile(filePath)
 
     _updateLengthBetweenTimes(filePath)
 

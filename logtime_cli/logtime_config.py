@@ -18,9 +18,9 @@ def get_option(section, name):
 
 
 def _create_user_config():
-    cf = open(USER_CONFIG_FILE, 'w')
-    _DEFAULT_CONFIG.write(cf)
-    cf.close()
+    config_file = open(USER_CONFIG_FILE, 'w')
+    _DEFAULT_CONFIG.write(config_file)
+    config_file.close()
     _USER_CONFIG.read(USER_CONFIG_FILE)
 
 

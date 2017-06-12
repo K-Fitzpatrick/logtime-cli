@@ -6,7 +6,7 @@ import os
 import sys
 import re
 import string
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from logtime_cli.logtime_config import GetOption
 
 OUTPUT_TIME_FORMAT = '%I:%M %p'

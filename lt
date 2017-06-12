@@ -13,6 +13,7 @@ from logtime_cli.logtime_config import OpenUserConfig, GetOption
 
 
 def _open_previous(ctx, param, value):
+    del param
     if not value:
         return
     previous_date = (date.today() - timedelta(days=value))
@@ -31,6 +32,7 @@ def _open_yesterday(ctx, param, value):
 
 
 def _open_user_config(ctx, param, value):
+    del param
     if not value:
         return
     OpenUserConfig()
@@ -38,6 +40,7 @@ def _open_user_config(ctx, param, value):
 
 
 def _open_logfile_directory(ctx, param, value):
+    del param
     if not value:
         return
     log_file_directory = GetOption('DEFAULT', 'logfile_directory')

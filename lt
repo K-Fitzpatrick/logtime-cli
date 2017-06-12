@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import click
 import os
 from datetime import date, timedelta
+
+import click
 from logtime_cli.logtime import log_time, open_logfile_for_date
 from logtime_cli.logtime_config import OpenUserConfig, GetOption
 

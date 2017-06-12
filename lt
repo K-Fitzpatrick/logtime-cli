@@ -14,7 +14,7 @@ def _open_previous(ctx, param, value):
     previous_date = (date.today() - timedelta(days=value))
     try:
         open_logfile_for_date(previous_date)
-    except WindowsError as e:
+    except WindowsError:
         print "No logfile exists for " + str(previous_date) + "."
 
     ctx.exit()

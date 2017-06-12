@@ -66,16 +66,16 @@ def _get_time_from_argument(arg_time):
 
 
 def _get_length_between_times(previous_time_entry, time_entry):
-    d1 = datetime.strptime(previous_time_entry, OUTPUT_TIME_FORMAT)
-    d2 = datetime.strptime(time_entry, OUTPUT_TIME_FORMAT)
-    return (d2 - d1).total_seconds() / 3600
+    from_date = datetime.strptime(previous_time_entry, OUTPUT_TIME_FORMAT)
+    to_date = datetime.strptime(time_entry, OUTPUT_TIME_FORMAT)
+    return (to_date - from_date).total_seconds() / 3600
 
 
 def _update_length_between_times(file_path):
-    f = open(file_path, "r")
-    read_lines = f.readlines()
-    f.close()
-    f = open(file_path, "w")
+    logfile = open(file_path, "r")
+    read_lines = logfile.readlines()
+    logfile.close()
+    logfile = open(file_path, "w")
     for current_line in read_lines:
         first_time_entry = _get_first_time_entry(current_line)
         if first_time_entry:
@@ -86,17 +86,17 @@ def _update_length_between_times(file_path):
             logfile.write(_format_entry(items[1].strip(), items[2].strip(), items[3].strip(),
                                         length_between))
         else:
-            f.write(current_line)
-    f.close()
+            logfile.write(current_line)
+    logfile.close()
 
 
 def _create_new_log_file(file_path):
-    f = open(file_path, "a+")
-    f.write("# Notes:\n\n\n")
-    f.write("# Time log:\n\n")
-    f.write(_format_entry("Start", "End", "Task", "Length"))
-    f.write(_format_entry("---", "---", "---", "---"))
-    f.close()
+    logfile = open(file_path, "a+")
+    logfile.write("# Notes:\n\n\n")
+    logfile.write("# Time log:\n\n")
+    logfile.write(_format_entry("Start", "End", "Task", "Length"))
+    logfile.write(_format_entry("---", "---", "---", "---"))
+    logfile.close()
 
 
 def _get_log_file_directory():
@@ -106,7 +106,7 @@ def _get_log_file_directory():
     return log_file_directory
 
 
-def _get_file_path_for_date(date):
+def _get_file_path_for_date(date_for_file_name):
     #Always reset path to this file
     if os.path.isdir(sys.path[0]):
         os.chdir(sys.path[0])
@@ -115,17 +115,17 @@ def _get_file_path_for_date(date):
 
     log_file_directory = _get_log_file_directory()
 
-    current_date = date.isoformat()
+    current_date = date_for_file_name.isoformat()
     file_path = os.path.join(log_file_directory, current_date + ".md")
 
     return os.path.abspath(file_path)
 
 
 def _print_last_line_to_console(file_path):
-    f = open(file_path, "a+")
-    lines = f.readlines()
+    logfile = open(file_path, "a+")
+    lines = logfile.readlines()
     print lines[len(lines)-1]
-    f.close()
+    logfile.close()
 
 
 def open_logfile_for_date(date_to_open, can_create=False):

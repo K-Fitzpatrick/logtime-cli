@@ -7,7 +7,7 @@ import sys
 import re
 import string
 from datetime import date, datetime
-from logtime_cli.logtime_config import GetOption
+from logtime_cli.logtime_config import get_option
 
 OUTPUT_TIME_FORMAT = '%I:%M %p'
 
@@ -98,7 +98,7 @@ def _create_new_log_file(file_path):
 
 
 def _get_log_file_directory():
-    log_file_directory = GetOption('DEFAULT', 'logfile_directory')
+    log_file_directory = get_option('DEFAULT', 'logfile_directory')
     if not os.path.exists(log_file_directory):
         os.mkdir(log_file_directory)
     return log_file_directory
@@ -169,7 +169,7 @@ def log_time(task_entry, start=None, end=None):
         logfile.write(_format_entry(last_time_entry, current_time_entry, task_entry,
                                     length_between))
     else:
-        start_time = GetOption("DEFAULT", "new_day_start_time")
+        start_time = get_option("DEFAULT", "new_day_start_time")
         length_between = _get_length_between_times(start_time, current_time_entry)
         logfile.write(_format_entry(start_time, current_time_entry, task_entry,
                                     length_between))

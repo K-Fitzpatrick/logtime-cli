@@ -9,7 +9,7 @@ from datetime import date, timedelta
 
 import click
 from logtime_cli.logtime import log_time, open_logfile_for_date
-from logtime_cli.logtime_config import OpenUserConfig, GetOption
+from logtime_cli.logtime_config import open_user_config, get_option
 
 
 def _open_previous(ctx, param, value):
@@ -35,7 +35,7 @@ def _open_user_config(ctx, param, value):
     del param
     if not value:
         return
-    OpenUserConfig()
+    open_user_config()
     ctx.exit()
 
 
@@ -43,7 +43,7 @@ def _open_logfile_directory(ctx, param, value):
     del param
     if not value:
         return
-    log_file_directory = GetOption('DEFAULT', 'logfile_directory')
+    log_file_directory = get_option('DEFAULT', 'logfile_directory')
     os.startfile(log_file_directory)
     ctx.exit()
 

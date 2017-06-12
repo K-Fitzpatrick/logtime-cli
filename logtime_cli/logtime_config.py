@@ -4,28 +4,28 @@ from os import path, system
 DEFAULT_CONFIG_FILE = path.dirname(__file__) + '/config/config-default.ini'
 USER_CONFIG_FILE = path.dirname(__file__) + '/config/config-user.ini'
 
-_defaultConfig = ConfigParser.ConfigParser()
-_defaultConfig.read(DEFAULT_CONFIG_FILE)
+_DEFAULT_CONFIG = ConfigParser.ConfigParser()
+_DEFAULT_CONFIG.read(DEFAULT_CONFIG_FILE)
 
-_userConfig = ConfigParser.ConfigParser()
-_userConfig.read(USER_CONFIG_FILE)
-
-
-def GetOption(section, name):
-    if _userConfig.has_option(section, name):
-        return _userConfig.get(section, name)
-    return _defaultConfig.get(section, name)
+_USER_CONFIG = ConfigParser.ConfigParser()
+_USER_CONFIG.read(USER_CONFIG_FILE)
 
 
-def _createUserConfig():
+def get_option(section, name):
+    if _USER_CONFIG.has_option(section, name):
+        return _USER_CONFIG.get(section, name)
+    return _DEFAULT_CONFIG.get(section, name)
+
+
+def _create_user_config():
     cf = open(USER_CONFIG_FILE, 'w')
-    _defaultConfig.write(cf)
+    _DEFAULT_CONFIG.write(cf)
     cf.close()
-    _userConfig.read(USER_CONFIG_FILE)
+    _USER_CONFIG.read(USER_CONFIG_FILE)
 
 
-def OpenUserConfig():
+def open_user_config():
     if not path.isfile(USER_CONFIG_FILE):
-        _createUserConfig()
+        _create_user_config()
     system("start " + USER_CONFIG_FILE)
     exit()

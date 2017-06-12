@@ -1,3 +1,7 @@
+"""
+Locate and manupulate logfiles.
+"""
+
 import os
 import sys
 import re
@@ -115,6 +119,12 @@ def _print_last_line_to_console(file_path):
 
 
 def open_logfile_for_date(date_to_open, can_create=False):
+    """
+    Open the logfile for the given `date_to_open`.
+    Will search the logfile directory as given in the configuration file
+    for the file `YYYY-MM-DD.md`, as derived from the given `date_to_open`.
+    If `can_create` is `True`, any unfound file will be created.
+    """
     file_path = _get_file_path_for_date(date_to_open)
 
     if can_create and not os.path.isfile(file_path):
@@ -123,7 +133,12 @@ def open_logfile_for_date(date_to_open, can_create=False):
     os.startfile(file_path)
 
 
-def log_time(task_entry, start, end):
+def log_time(task_entry, start=None, end=None):
+    """
+    Log `task_entry` to today's logfile.
+    Unless given, `start` will be defined as the last logged time.
+    Unless given, `end` will be defined as the current time.
+    """
     file_path = _get_file_path_for_date(date.today())
 
     if not os.path.isfile(file_path):

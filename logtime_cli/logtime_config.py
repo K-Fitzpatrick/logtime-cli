@@ -1,3 +1,7 @@
+"""
+Manipulate and manage configuration files.
+"""
+
 import ConfigParser
 from os import path, system
 
@@ -12,6 +16,11 @@ _USER_CONFIG.read(USER_CONFIG_FILE)
 
 
 def get_option(section, name):
+    """
+    Retrieve an option from the config files.
+    First, check User Config
+    If the options doesn't exist there, check Default Config
+    """
     if _USER_CONFIG.has_option(section, name):
         return _USER_CONFIG.get(section, name)
     return _DEFAULT_CONFIG.get(section, name)
@@ -25,6 +34,9 @@ def _create_user_config():
 
 
 def open_user_config():
+    """
+    Opens the User Config file with the user's default text editor
+    """
     if not path.isfile(USER_CONFIG_FILE):
         _create_user_config()
     system("start " + USER_CONFIG_FILE)

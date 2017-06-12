@@ -12,7 +12,12 @@ from logtime_cli.logtime_config import GetOption
 OUTPUT_TIME_FORMAT = '%I:%M %p'
 
 def _format_entry(previous_time_entry, time_entry, task_entry, task_length):
-    return "|\t" + str(previous_time_entry) + "\t|\t" + str(time_entry) + "\t|\t" + str(task_entry) + "\t|\t" + str(task_length) + "\t|\n"
+    entry = "|\t" + str(previous_time_entry)
+    entry += "\t|\t" + str(time_entry)
+    entry += "\t|\t" + str(task_entry)
+    entry += "\t|\t" + str(task_length)
+    entry += "\t|\n"
+    return entry
 
 
 def _get_first_time_entry(entry_line):
@@ -52,10 +57,12 @@ def _get_time_from_argument(arg_time):
     time_string = str(hours) + str(minutes)
 
     if military_time_match:
-        return datetime.strptime(time_string, "%H%M").strftime(OUTPUT_TIME_FORMAT)
+        output_date = datetime.strptime(time_string, "%H%M")
+        return output_date.strftime(OUTPUT_TIME_FORMAT)
     elif standard_time_match:
         meridiem = standard_time_match.group(3)
-        return datetime.strptime(time_string + _convert_time_of_day(meridiem), "%I%M%p").strftime(OUTPUT_TIME_FORMAT)
+        output_date = datetime.strptime(time_string + _convert_time_of_day(meridiem), "%I%M%p")
+        return output_date.strftime(OUTPUT_TIME_FORMAT)
 
 
 def _get_length_between_times(previous_time_entry, time_entry):
@@ -74,7 +81,10 @@ def _update_length_between_times(file_path):
         if first_time_entry:
             second_time_entry = _get_second_time_entry(current_line)
             items = string.split(current_line, "|")
-            f.write(_format_entry(items[1].strip(), items[2].strip(), items[3].strip(), _get_length_between_times(first_time_entry, second_time_entry)))
+            length_between = _get_length_between_times(first_time_entry, second_time_entry)
+
+            logfile.write(_format_entry(items[1].strip(), items[2].strip(), items[3].strip(),
+                                        length_between))
         else:
             f.write(current_line)
     f.close()
@@ -146,8 +156,8 @@ def log_time(task_entry, start=None, end=None):
 
     _update_length_between_times(file_path)
 
-    f = open(file_path, "a+")
-    lines = f.readlines()
+    logfile = open(file_path, "a+")
+    lines = logfile.readlines()
     last_time_entry = _get_second_time_entry(lines[len(lines)-1])
     current_time_entry = datetime.today().time().strftime(OUTPUT_TIME_FORMAT)
 
@@ -157,10 +167,14 @@ def log_time(task_entry, start=None, end=None):
         current_time_entry = _get_time_from_argument(end)
 
     if last_time_entry:
-        f.write(_format_entry(last_time_entry, current_time_entry, task_entry, _get_length_between_times(last_time_entry, current_time_entry)))
+        length_between = _get_length_between_times(last_time_entry, current_time_entry)
+        logfile.write(_format_entry(last_time_entry, current_time_entry, task_entry,
+                                    length_between))
     else:
         start_time = GetOption("DEFAULT", "new_day_start_time")
-        f.write(_format_entry(start_time, current_time_entry, task_entry, _get_length_between_times(start_time, current_time_entry)))
-    f.close()
+        length_between = _get_length_between_times(start_time, current_time_entry)
+        logfile.write(_format_entry(start_time, current_time_entry, task_entry,
+                                    length_between))
+    logfile.close()
 
     _print_last_line_to_console(file_path)

@@ -24,16 +24,14 @@ def _get_first_time_entry(entry_line):
     match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entry_line)
     if match:
         return match[0]
-    else:
-        return None
+    return None
 
 
 def _get_second_time_entry(entry_line):
     match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entry_line)
     if match:
         return match[1]
-    else:
-        return None
+    return None
 
 
 def _convert_time_of_day(time_of_day):
@@ -49,7 +47,7 @@ def _get_time_from_argument(arg_time):
     standard_time_match = re.search('^([0][0-9]|[1][0-2]):?([0-6][0-9])([AaPp])$', arg_time)
 
     time_match = military_time_match or standard_time_match
-    if not (time_match):
+    if not time_match:
         raise ValueError('"' + arg_time + '" is not a valid time')
 
     hours = time_match.group(1)

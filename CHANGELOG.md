@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## Added
+- Add CLI option to continue your last entry by updating its time
 
 ## 1.0.0 - 2017-06-10
 ## Added

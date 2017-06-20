@@ -141,6 +141,41 @@ def open_logfile_for_date(date_to_open, can_create=False):
     os.startfile(file_path)
 
 
+def continue_last_entry():
+    """
+    Update the most recent time entry by setting the end time to the current time.
+    """
+    file_path = _get_file_path_for_date(date.today())
+
+    if not os.path.isfile(file_path):
+        _create_new_log_file(file_path)
+
+
+    logfile = open(file_path, "r")
+    lines = logfile.readlines()
+    logfile.close()
+
+    current_time_entry = datetime.today().time().strftime(OUTPUT_TIME_FORMAT)
+    entry_line = lines[-1]
+    time_regex = r"[0-1][0-9]:[0-6][0-9] [AP]M"
+
+    match = re.findall(time_regex+r'.*'+time_regex, entry_line)
+    if not entry_line or not match:
+        raise ValueError('There is no time entry to continue.')
+
+    new_entry_line = re.sub(r'('+time_regex+r'.*?)'+time_regex,
+                            r'\g<1>'+current_time_entry, entry_line)
+
+    logfile = open(file_path, "w")
+    for current_line in lines[:-1]:
+        logfile.write(current_line)
+    logfile.write(new_entry_line)
+    logfile.close()
+
+    _update_length_between_times(file_path)
+    _print_last_line_to_console(file_path)
+
+
 def log_time(task_entry, start=None, end=None):
     """
     Log `task_entry` to today's logfile.

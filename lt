@@ -5,7 +5,7 @@ CLI utility for logging the time you spend on things.
 """
 
 import os
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 import click
 from logtime_cli.logtime import log_time, open_logfile_for_date, continue_last_entry
@@ -69,11 +69,14 @@ def _open_logfile_directory(ctx, param, value):
 @click.option('--dir', is_flag=True, callback=_open_logfile_directory, expose_value=False,
               is_eager=True, help='Open logfile directory and exit.')
 @click.argument('entry', nargs=-1)
+@click.option('--begin', '-b', is_flag=True,
+              help='Set the start and end time for this entry to the current time. '
+              'Use `-c` to continue this entry later.')
 @click.option('--start', '-s',
               help='Choose a start time for this entry. Format: `0130p`, `01:30p, `1330`, `13:30`.')
 @click.option('--end', '-e',
               help='Choose an end time for this entry. Format: `0130p`, `01:30p, `1330`, `13:30`.')
-def cli(entry, start, end):
+def cli(entry, begin, start, end):
     """Log what you just finished doing.
 
     Examples:
@@ -89,6 +92,9 @@ def cli(entry, start, end):
     if not entry:
         open_logfile_for_date(date.today(), can_create=True)
     else:
+        if begin:
+            start = datetime.today().time().strftime("%H%M")
+            end = datetime.today().time().strftime("%H%M")
         log_time(' '.join(entry), start, end)
 
 if __name__ == '__main__':

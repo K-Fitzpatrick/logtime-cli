@@ -45,6 +45,23 @@ To log time with a start and end date:
 lt -s 07:15a -e 07:30a what I did during that time
 ```
 
+## Example workflows
+```
+lt what I just finished doing
+```
+```
+lt -s 0700 what I just finished doing, when this is the first thing I logged today
+```
+```
+lt -e 1100 what I know I stopped doing at 1100, but forgot to log
+lt what I just finished doing
+```
+```
+lt -b what I am about to do, when this is the first thing I logged in a while
+# ... later, when I'm done ...
+lt -c
+```
+
 ## Configuration
 In your installation directory (with pip, `C:\<PATH_TO_PYTHON>\Lib\site-packages\logtime-cli`), you'll find a file `config/config-default.ini`.
 

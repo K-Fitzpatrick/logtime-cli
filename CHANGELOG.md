@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## Added
+- Add CLI option to begin an entry by setting the start and end times to the current time. Intended to be continued later using the `-c` command.
 
 ## 1.1.0 - 2017-06-25
 ## Added

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='logtime-cli',
-    version='1.1.0',
+    version='1.2.0',
     scripts=['lt'],
     packages=['logtime_cli'],
     description='CLI utility for logging the time you spend on things',

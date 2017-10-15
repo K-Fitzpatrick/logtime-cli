@@ -1,5 +1,5 @@
 """
-Locate and manupulate logfiles.
+Locate and manipulate logfiles.
 """
 
 import os

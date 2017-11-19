@@ -62,6 +62,9 @@ lt -b what I am about to do, when this is the first thing I logged in a while
 lt -c
 ```
 
+## Additional options
+- `--pie` will display a pie chart of today's time log
+
 ## Configuration
 In your installation directory (with pip, `C:\<PATH_TO_PYTHON>\Lib\site-packages\logtime-cli`), you'll find a file `config/config-default.ini`.
 

@@ -11,6 +11,7 @@ setup(
     url='https://github.com/K-Fitzpatrick/logtime-cli',
     include_package_data=True,
     install_requires=[
-        'click==6.7'
+        'click==6.7',
+        'matplotlib==2.1.0',
     ],
 )

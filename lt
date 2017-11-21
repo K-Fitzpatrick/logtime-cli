@@ -6,10 +6,10 @@ CLI utility for logging the time you spend on things.
 
 import os
 from datetime import date, timedelta, datetime
-
 import click
-from logtime_cli.logtime import log_time, open_logfile_for_date, continue_last_entry
+from logtime_cli.logtime import log_time, open_logfile_for_date, continue_last_entry, _get_file_path_for_date
 from logtime_cli.logtime_config import open_user_config, get_option
+from logtime_cli.statistics import logfile_pie
 
 
 def _open_previous(ctx, param, value):
@@ -56,6 +56,20 @@ def _open_logfile_directory(ctx, param, value):
     ctx.exit()
 
 
+def _open_pie(ctx, param, value):
+    del param
+    if not value:
+        return
+
+    file_path = _get_file_path_for_date(date.today())
+    logfile = open(file_path, "r")
+    lines = logfile.readlines()
+
+    logfile_pie.show_pie(lines, date.today())
+
+    ctx.exit()
+
+
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('--previous', '-p', type=int, callback=_open_previous, expose_value=False,
               is_eager=True, help='Open a logfile X days in the past and exit.')
@@ -68,6 +82,8 @@ def _open_logfile_directory(ctx, param, value):
               is_eager=True, help='Open user config file and exit.')
 @click.option('--dir', is_flag=True, callback=_open_logfile_directory, expose_value=False,
               is_eager=True, help='Open logfile directory and exit.')
+@click.option('--pie', is_flag=True, callback=_open_pie, expose_value=False,
+              is_eager=True, help="Show pie chart for today's time log.")
 @click.argument('entry', nargs=-1)
 @click.option('--begin', '-b', is_flag=True,
               help='Set the start and end time for this entry to the current time. '

@@ -1,10 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='logtime-cli',
     version='1.3.0',
     scripts=['lt'],
-    packages=['logtime_cli'],
+    packages=find_packages(),
     description='CLI utility for logging the time you spend on things',
     author='Kyle Fitzpatrick',
     author_email='kyle.a.fitzpatrick@gmail.com',

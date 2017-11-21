@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.3.1 - 2017-11-21
 ### Fixed
 - Setup.py can now find the statistics package
 

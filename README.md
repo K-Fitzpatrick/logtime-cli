@@ -72,3 +72,10 @@ Copy that file to `config/config-user.ini`, and change that file as needed.
 
 - **`new_day_start_time`** affects what time each day is assumed to start at for the first call of `lt something`. Example: `10:00 AM`
 - **`logfile_directory`** is where the logtime files get stored. Works on relative and absolute paths. Example: `C:\...\Dropbox\logtime-logs`
+
+## Bash autocomplete
+`click` builds an autocomplete script for us. To make use it, put the following in your .bashrc:
+
+```
+eval "$(_LT_COMPLETE=source lt)"
+```

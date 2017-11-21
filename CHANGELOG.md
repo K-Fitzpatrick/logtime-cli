@@ -5,8 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-## Added
+### Added
 - CLI option `--pie` that displays a pie chart of today's time log
+- Instructions for activating bash autocompletion
 
 ## 1.2.0 - 2017-06-25
 ### Added

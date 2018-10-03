@@ -4,101 +4,12 @@ Locate and manipulate logfiles.
 
 import os
 import sys
-import re
-import string
 from datetime import date, datetime
 from logtime_cli.logtime_config import get_option
 
 import logtime_cli.logfile_data as logfile_data
 
 OUTPUT_TIME_FORMAT = '%I:%M %p'
-
-def _format_entry(previous_time_entry, time_entry, task_entry, task_length):
-    entry = "|\t" + str(previous_time_entry)
-    entry += "\t|\t" + str(time_entry)
-    entry += "\t|\t" + str(task_entry)
-    entry += "\t|\t" + str(task_length)
-    entry += "\t|\n"
-    return entry
-
-
-def _get_first_time_entry(entry_line):
-    match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entry_line)
-    if match:
-        return match[0]
-    return None
-
-
-def _get_second_time_entry(entry_line):
-    match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", entry_line)
-    if match:
-        return match[1]
-    return None
-
-
-def _convert_time_of_day(time_of_day):
-    if time_of_day == 'A' or time_of_day == 'a':
-        return "AM"
-    if time_of_day == 'P' or time_of_day == 'p':
-        return "PM"
-    return None
-
-
-def _get_time_from_argument(arg_time):
-    military_time_match = re.search('^([0-1][0-9]|[2][0-3]):?([0-6][0-9])$', arg_time)
-    standard_time_match = re.search('^([0][0-9]|[1][0-2]):?([0-6][0-9])([AaPp])$', arg_time)
-
-    time_match = military_time_match or standard_time_match
-    if not time_match:
-        raise ValueError('"' + arg_time + '" is not a valid time')
-
-    hours = time_match.group(1)
-    minutes = time_match.group(2)
-    time_string = str(hours) + str(minutes)
-
-    if military_time_match:
-        output_date = datetime.strptime(time_string, "%H%M")
-        return output_date.strftime(OUTPUT_TIME_FORMAT)
-    elif standard_time_match:
-        meridiem = standard_time_match.group(3)
-        output_date = datetime.strptime(time_string + _convert_time_of_day(meridiem), "%I%M%p")
-        return output_date.strftime(OUTPUT_TIME_FORMAT)
-    return None
-
-
-def _get_length_between_times(previous_time_entry, time_entry):
-    from_date = datetime.strptime(previous_time_entry, OUTPUT_TIME_FORMAT)
-    to_date = datetime.strptime(time_entry, OUTPUT_TIME_FORMAT)
-    return (to_date - from_date).total_seconds() / 3600
-
-
-def _update_length_between_times(file_path):
-    logfile = open(file_path, "r")
-    read_lines = logfile.readlines()
-    logfile.close()
-    logfile = open(file_path, "w")
-    for current_line in read_lines:
-        first_time_entry = _get_first_time_entry(current_line)
-        if first_time_entry:
-            second_time_entry = _get_second_time_entry(current_line)
-            items = string.split(current_line, "|")
-            length_between = _get_length_between_times(first_time_entry, second_time_entry)
-
-            logfile.write(_format_entry(items[1].strip(), items[2].strip(), items[3].strip(),
-                                        length_between))
-        else:
-            logfile.write(current_line)
-    logfile.close()
-
-
-def _create_new_log_file(file_path):
-    logfile = open(file_path, "a+")
-    logfile.write("# Notes:\n\n\n")
-    logfile.write("# Time log:\n\n")
-    logfile.write(_format_entry("Start", "End", "Task", "Length"))
-    logfile.write(_format_entry("---", "---", "---", "---"))
-    logfile.close()
-
 
 def _get_log_file_directory():
     log_file_directory = get_option('DEFAULT', 'logfile_directory')

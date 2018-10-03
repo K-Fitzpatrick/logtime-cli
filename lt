@@ -63,7 +63,7 @@ def _open_pie(ctx, param, value):
 
     file_path = _get_file_path_for_date(date.today())
     logfile = open(file_path, "r")
-    lines = logfile.readlines()
+    lines = logfile.read()
 
     logfile_pie.show_pie(lines, date.today())
 

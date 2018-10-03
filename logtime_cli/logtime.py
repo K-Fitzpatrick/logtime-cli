@@ -139,7 +139,8 @@ def open_logfile_for_date(date_to_open, can_create=False):
     file_path = _get_file_path_for_date(date_to_open)
 
     if can_create and not os.path.isfile(file_path):
-        _create_new_log_file(file_path)
+        log_data = logfile_data.Logfile("", [])
+        save_logfile(date_to_open, log_data)
 
     os.startfile(file_path)
 

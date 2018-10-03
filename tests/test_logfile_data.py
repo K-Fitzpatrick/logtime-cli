@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from logtime_cli.logfile_data.markdown_dal import _get_logfile, _get_logfile_text, Entry, Logfile
+import logtime_cli.logfile_data as logfile_data
 
 test_text = '\n'.join([
     "# Notes:",
@@ -22,22 +22,22 @@ test_text = '\n'.join([
     "",
 ])
 
-test_logfile = Logfile(
+test_logfile = logfile_data.Logfile(
     notes="meow\nmeow\nmeow\nmeow",
     entries=[
-        Entry(start_time=datetime.strptime("11:45 AM", "%I:%M %p"), end_time=datetime.strptime("12:05 PM", "%I:%M %p"), task="logtime: pie charts"),
-        Entry(start_time=datetime.strptime("12:05 PM", "%I:%M %p"), end_time=datetime.strptime("12:17 PM", "%I:%M %p"), task="logtime: requirements"),
-        Entry(start_time=datetime.strptime("12:17 PM", "%I:%M %p"), end_time=datetime.strptime("02:00 PM", "%I:%M %p"), task="logtime: refactor design"),
-        Entry(start_time=datetime.strptime("02:00 PM", "%I:%M %p"), end_time=datetime.strptime("02:15 PM", "%I:%M %p"), task="id verification form"),
-        Entry(start_time=datetime.strptime("02:15 PM", "%I:%M %p"), end_time=datetime.strptime("02:44 PM", "%I:%M %p"), task="logtime: logtime parser"),
-        Entry(start_time=datetime.strptime("02:44 PM", "%I:%M %p"), end_time=datetime.strptime("04:10 PM", "%I:%M %p"), task="logtime: pie charts"),
+        logfile_data.Entry(start_time=datetime.strptime("11:45 AM", "%I:%M %p").time(), end_time=datetime.strptime("12:05 PM", "%I:%M %p").time(), task="logtime: pie charts"),
+        logfile_data.Entry(start_time=datetime.strptime("12:05 PM", "%I:%M %p").time(), end_time=datetime.strptime("12:17 PM", "%I:%M %p").time(), task="logtime: requirements"),
+        logfile_data.Entry(start_time=datetime.strptime("12:17 PM", "%I:%M %p").time(), end_time=datetime.strptime("02:00 PM", "%I:%M %p").time(), task="logtime: refactor design"),
+        logfile_data.Entry(start_time=datetime.strptime("02:00 PM", "%I:%M %p").time(), end_time=datetime.strptime("02:15 PM", "%I:%M %p").time(), task="id verification form"),
+        logfile_data.Entry(start_time=datetime.strptime("02:15 PM", "%I:%M %p").time(), end_time=datetime.strptime("02:44 PM", "%I:%M %p").time(), task="logtime: logtime parser"),
+        logfile_data.Entry(start_time=datetime.strptime("02:44 PM", "%I:%M %p").time(), end_time=datetime.strptime("04:10 PM", "%I:%M %p").time(), task="logtime: pie charts"),
     ],
 )
 
 
 class Test_Load(unittest.TestCase):
     def test_markdown_to_logfile_conversion(self):
-        logfile = _get_logfile(test_text)
+        logfile = logfile_data.get_logfile(test_text)
 
         self.assertEqual(logfile.notes, test_logfile.notes)
         self.assertEqual(logfile.entries, test_logfile.entries)
@@ -45,7 +45,7 @@ class Test_Load(unittest.TestCase):
 
 class Test_Save(unittest.TestCase):
     def test_logfile_to_markdown_conversion(self):
-        logfile_text = _get_logfile_text(test_logfile)
+        logfile_text = logfile_data.get_logfile_text(test_logfile)
 
         self.assertEqual(logfile_text, test_text)
 

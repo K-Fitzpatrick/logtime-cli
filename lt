@@ -109,8 +109,8 @@ def cli(entry, begin, start, end):
         open_logfile_for_date(date.today(), can_create=True)
     else:
         if begin:
-            start = datetime.today().time().strftime("%H%M")
-            end = datetime.today().time().strftime("%H%M")
+            start = datetime.today().time()
+            end = datetime.today().time()
         log_time(' '.join(entry), start, end)
 
 if __name__ == '__main__':

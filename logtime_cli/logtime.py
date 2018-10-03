@@ -9,6 +9,8 @@ import string
 from datetime import date, datetime
 from logtime_cli.logtime_config import get_option
 
+import logtime_cli.logfile_data as logfile_data
+
 OUTPUT_TIME_FORMAT = '%I:%M %p'
 
 def _format_entry(previous_time_entry, time_entry, task_entry, task_length):
@@ -61,6 +63,7 @@ def _get_time_from_argument(arg_time):
         meridiem = standard_time_match.group(3)
         output_date = datetime.strptime(time_string + _convert_time_of_day(meridiem), "%I%M%p")
         return output_date.strftime(OUTPUT_TIME_FORMAT)
+    return None
 
 
 def _get_length_between_times(previous_time_entry, time_entry):
@@ -184,30 +187,38 @@ def log_time(task_entry, start=None, end=None):
     """
     file_path = _get_file_path_for_date(date.today())
 
-    if not os.path.isfile(file_path):
-        _create_new_log_file(file_path)
+    if os.path.isfile(file_path):
+        logfile_text = open(file_path).read()
+        log_data = logfile_data.get_logfile(logfile_text)
+    else:
+        log_data = logfile_data.Logfile("", [])
 
-    _update_length_between_times(file_path)
+    start_time = None
+    if log_data.entries:
+        start_time = log_data.entries[-1].end_time
 
-    logfile = open(file_path, "a+")
-    lines = logfile.readlines()
-    last_time_entry = _get_second_time_entry(lines[len(lines)-1])
-    current_time_entry = datetime.today().time().strftime(OUTPUT_TIME_FORMAT)
+    end_time = datetime.today().time()
 
     if start:
-        last_time_entry = _get_time_from_argument(start)
+        start_time = start
     if end:
-        current_time_entry = _get_time_from_argument(end)
+        end_time = end
 
-    if last_time_entry:
-        length_between = _get_length_between_times(last_time_entry, current_time_entry)
-        logfile.write(_format_entry(last_time_entry, current_time_entry, task_entry,
-                                    length_between))
-    else:
-        start_time = get_option("DEFAULT", "new_day_start_time")
-        length_between = _get_length_between_times(start_time, current_time_entry)
-        logfile.write(_format_entry(start_time, current_time_entry, task_entry,
-                                    length_between))
-    logfile.close()
+    if start_time is None:
+        start_time_str = get_option("DEFAULT", "new_day_start_time")
+        start_time = datetime.strptime(start_time_str, OUTPUT_TIME_FORMAT).time()
 
+    log_data.entries.append(logfile_data.Entry(start_time, end_time, task_entry))
+
+    save_logfile(date.today(), log_data)
     _print_last_line_to_console(file_path)
+
+
+def save_logfile(logfile_date, log_data):
+    """Converts the given Logfile object to text, and saves it to a logfile at the given date"""
+    file_path = _get_file_path_for_date(logfile_date)
+    logfile_text = logfile_data.get_logfile_text(log_data)
+
+    logfile = open(file_path, "w+")
+    logfile.write(logfile_text)
+    logfile.close()

@@ -1,13 +1,15 @@
-'''
-"Database" handling
-'''
+"""
+Responsibilities:
+    Represent logfile data
+    Convert to/from object representation
+"""
 
 from datetime import date, datetime
 import string
 import re
 from collections import namedtuple
 
-OUTPUT_TIME_FORMAT = '%I:%M %p'
+OUTPUT_TIME_FORMAT = "%I:%M %p"
 
 # Models
 Entry = namedtuple('Entry', ['start_time', 'end_time', 'task'])
@@ -18,12 +20,14 @@ def _get_notes_text(logfile_text):
     match = re.findall("# Notes:\n(.*?)\n\n# Time log:", logfile_text, re.DOTALL)
     if match:
         return match[0]
+    return None
 
 
 def _get_timelog_section(logfile_text):
     match = re.findall("# Time log:.*", logfile_text, re.DOTALL)
     if match:
         return match[0]
+    return None
 
 
 def _get_timelog_entries(logfile_text):
@@ -35,8 +39,8 @@ def _get_timelog_entries(logfile_text):
         if match:
             items = [item.strip() for item in string.split(current_line, '|')]
             entry = Entry(
-                start_time=datetime.strptime(items[1], "%I:%M %p").time(),
-                end_time=datetime.strptime(items[2], "%I:%M %p").time(),
+                start_time=datetime.strptime(items[1], OUTPUT_TIME_FORMAT).time(),
+                end_time=datetime.strptime(items[2], OUTPUT_TIME_FORMAT).time(),
                 task=items[3],
             )
             entries.append(entry)

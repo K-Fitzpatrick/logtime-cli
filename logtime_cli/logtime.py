@@ -104,7 +104,7 @@ def continue_last_entry():
         raise ValueError('There is no time entry to continue.')
 
     current_time = datetime.today().time()
-    log_data.entries[-1] = log_data.entries[-1]._replace(end_time=current_time)
+    log_data.entries[-1].end_time = current_time
 
     save_logfile(date.today(), log_data)
     _print_last_line_to_console(file_path)

@@ -12,8 +12,54 @@ from collections import namedtuple
 OUTPUT_TIME_FORMAT = "%I:%M %p"
 
 # Models
-Entry = namedtuple('Entry', ['start_time', 'end_time', 'task'])
 Logfile = namedtuple('Logfile', ['notes', 'entries'])
+
+def _strip_seconds(current_time):
+    return datetime.combine(date.min, current_time).replace(second=0, microsecond=0).time()
+
+class Entry(object):
+    """A single time period logged in a logfile"""
+    def __init__(self, start_time, end_time, task):
+        self.__start_time = None
+        self.__end_time = None
+
+        self.start_time = start_time
+        self.end_time = end_time
+        self.task = task
+
+    def __eq__(self, comp):
+        return (
+            self.start_time == comp.start_time
+            and self.end_time == comp.end_time
+            and self.task == comp.task
+        )
+
+    def __ne__(self, comp):
+        return not self.__eq__(comp)
+
+    @property
+    def start_time(self):
+        """The start time, down to the minute"""
+        return self.__start_time
+
+    @start_time.setter
+    def start_time(self, value):
+        self.__start_time = _strip_seconds(value) if value is not None else None
+
+    @property
+    def end_time(self):
+        """The end time, down to the minute"""
+        return self.__end_time
+
+    @end_time.setter
+    def end_time(self, value):
+        self.__end_time = _strip_seconds(value) if value is not None else None
+
+    def duration(self):
+        """Return duration of the Entry in seconds"""
+        delta = (datetime.combine(date.min, self.end_time)
+                 - datetime.combine(date.min, self.start_time))
+        return delta.total_seconds() / 3600
 
 
 def _get_notes_text(logfile_text):
@@ -70,14 +116,11 @@ def _format_entry(previous_time_entry, time_entry, task_entry, task_length):
 
 def format_entry(entry):
     """Converts an Entry into a markdown table entry, and returns it as a string"""
-    start_datetime = datetime.combine(date.today(), entry.start_time).replace(second=0, microsecond=0)
-    end_datetime = datetime.combine(date.today(), entry.end_time).replace(second=0, microsecond=0)
-
     return _format_entry(
         entry.start_time.strftime(OUTPUT_TIME_FORMAT),
         entry.end_time.strftime(OUTPUT_TIME_FORMAT),
         entry.task,
-        (end_datetime - start_datetime).total_seconds() / 3600,
+        entry.duration(),
     )
 
 def get_logfile_text(logfile):

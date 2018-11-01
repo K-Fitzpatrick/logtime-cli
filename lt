@@ -150,4 +150,4 @@ def cli(entry, begin, start, end):
         log_time(' '.join(entry), start_time, end_time)
 
 if __name__ == '__main__':
-    cli() #pylint: disable=e1120
+    cli() #pylint: disable=no-value-for-parameter

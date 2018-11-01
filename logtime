@@ -15,5 +15,33 @@ def entry_point():
     pass
 
 
+@entry_point.command()
+@click.option('--previous', '-p', type=int, help='Use the logfile X days in the past.')
+def calc(previous):
+    """Print calculated time for the day.
+
+    Records beginning in `*` are considered "non-work hours".
+    """
+    if previous:
+        logdate = (date.today() - timedelta(days=previous))
+    else:
+        logdate = date.today()
+
+    if not logfile_io.exists(logdate):
+        print "No logfile exists for " + str(logdate) + "."
+        return
+
+    log_data = logfile_io.load_logfile(logdate)
+
+    all_hours = sum([x.duration() for x in log_data.entries])
+    work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] == '*'])
+    non_work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] != '*'])
+
+    print logdate
+    print "All Hours: " + str(all_hours)
+    print "Non-Work Hours: " + str(work_hours)
+    print "Work Hours: " + str(non_work_hours)
+
+
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

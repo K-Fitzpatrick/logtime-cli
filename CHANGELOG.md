@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - CLI command `logtime calc`, for calculating and displaying your logged time for the day
 - CLI command `logtime count_tasks`, for displaying how many tasks you went through in the day
 - CLI command `logtime list`, for displaying your logfiles and a number indicating how many days back it is, for use with the `-p` option for other commands
+- CLI command `logtime summarize_week`, for displaying all Summary sections for the week
 
 ## 1.3.1 - 2017-11-21
 ### Fixed

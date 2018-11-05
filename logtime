@@ -7,6 +7,7 @@ CLI utility for logging the time you spend on things.
 from datetime import date, datetime, timedelta
 import os
 import click
+import logtime_cli.logfile_data as logfile_data
 import logtime_cli.logfile_io as logfile_io
 import logtime_cli.logtime_config as logtime_config
 
@@ -75,6 +76,36 @@ def list(): #pylint: disable=redefined-builtin
         delta = datetime.today() - file_date
 
         print '{date} - {days}'.format(days=delta.days, date=name)
+
+@entry_point.command()
+@click.option('--previous', '-p', type=int, help='Use the week X weeks in the past; Monday begins the week.')
+def summarize_week(previous):
+    """Print Summary section for every day of the chosen week."""
+    if previous:
+        logdate = (date.today() - timedelta(weeks=previous))
+    else:
+        logdate = date.today()
+
+    first_day_delta = 0 - logdate.weekday() # 0 is Monday
+    last_day_delta = 7 - logdate.weekday() # 7 is the number of weekdays
+    week_range = range(first_day_delta, last_day_delta)
+
+    # Center the list on this week; start on Monday
+    weekdays = [(logdate + timedelta(days=x)) for x in week_range]
+
+    for day in weekdays:
+        if logfile_io.exists(day):
+            log_data = logfile_io.load_logfile(day)
+            notes = logfile_data.get_notes_data(log_data)
+            notes_sections = notes.get_subsections()
+
+            summaries = [x.full_text for x in notes_sections if x.name == 'Summary']
+            if len(summaries) > 1:
+                raise NotImplementedError('Found more than one Summary for {}. Combine them.'.format(day))
+            elif len(summaries) == 1:
+                print '## {}'.format(day)
+                print summaries[0]
+                print ''
 
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

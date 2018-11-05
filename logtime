@@ -43,5 +43,23 @@ def calc(previous):
     print "Work Hours: " + str(non_work_hours)
 
 
+@entry_point.command()
+@click.option('--previous', '-p', type=int, help='Use the logfile X days in the past.')
+def count_tasks(previous):
+    """Print number of tasks logged for the given day."""
+    if previous:
+        logdate = (date.today() - timedelta(days=previous))
+    else:
+        logdate = date.today()
+
+    if not logfile_io.exists(logdate):
+        print "No logfile exists for " + str(logdate) + "."
+        return
+
+    log_data = logfile_io.load_logfile(logdate)
+
+    print len(log_data.entries)
+
+
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

@@ -4,9 +4,11 @@ CLI utility for logging the time you spend on things.
     Usage: `logtime --help`
 """
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+import os
 import click
 import logtime_cli.logfile_io as logfile_io
+import logtime_cli.logtime_config as logtime_config
 
 
 @click.group()
@@ -60,6 +62,19 @@ def count_tasks(previous):
 
     print len(log_data.entries)
 
+
+@entry_point.command()
+def list(): #pylint: disable=redefined-builtin
+    """List existing logfiles, along with how many days back it is (for use with `-p`)"""
+    log_file_directory = logtime_config.get_option('DEFAULT', 'logfile_directory')
+    file_names = os.listdir(log_file_directory)
+
+    for name in file_names:
+        file_date = datetime.strptime(name, '%Y-%m-%d.md')
+
+        delta = datetime.today() - file_date
+
+        print '{date} - {days}'.format(days=delta.days, date=name)
 
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

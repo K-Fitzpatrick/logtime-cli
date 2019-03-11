@@ -31,12 +31,11 @@ def _make_autopct(task_durations):
     return _autopct
 
 
-def show_pie(logfile_text, title_date):
+def show_pie(log_data, title_date):
     """
-    Display a pie chart of the day's logged time given a logfile in the form of `logfile_text`.
+    Display a pie chart of the day's logged time given a logfile object.
     `title_date` is currently only for the graph's title.
     """
-    log_data = logfile_data.get_logfile(logfile_text)
     task_times = _get_task_times(log_data.entries)
 
     task_durations = [task_times[task].total_seconds() for task in task_times]

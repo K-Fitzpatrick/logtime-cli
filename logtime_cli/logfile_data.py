@@ -8,11 +8,19 @@ from datetime import date, datetime
 import string
 import re
 from collections import namedtuple
+import logtime_cli.logfile_notes_data as logfile_notes_data
 
 OUTPUT_TIME_FORMAT = "%I:%M %p"
 
 # Models
 Logfile = namedtuple('Logfile', ['notes', 'entries'])
+
+def get_notes_data(log_data):
+    """Return the logfile notes data of a Logfile data object.
+
+    Assumes the primary Notes section title, as that knowledge belongs in this file.
+    """
+    return logfile_notes_data.LogfileNotesSection(name='Notes:', full_text=log_data.notes)
 
 def _strip_seconds(current_time):
     return datetime.combine(date.min, current_time).replace(second=0, microsecond=0).time()

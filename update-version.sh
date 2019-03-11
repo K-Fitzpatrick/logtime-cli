@@ -1,3 +1,5 @@
+# Set version in setup and changelog, then commit
+
 set -e
 NEW_VERSION=$1
 

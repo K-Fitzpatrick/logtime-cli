@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+"""
+CLI utility for logging the time you spend on things.
+    Usage: `logtime --help`
+"""
+
+from datetime import date, datetime, timedelta
+import os
+import click
+import logtime_cli.logfile_io as logfile_io
+import logtime_cli.logtime_config as logtime_config
+
+
+@click.group()
+def entry_point():
+    """logtime"""
+    pass
+
+
+@entry_point.command()
+@click.option('--previous', '-p', type=int, help='Use the logfile X days in the past.')
+def calc(previous):
+    """Print calculated time for the day.
+
+    Records beginning in `*` are considered "non-work hours".
+    """
+    if previous:
+        logdate = (date.today() - timedelta(days=previous))
+    else:
+        logdate = date.today()
+
+    if not logfile_io.exists(logdate):
+        print "No logfile exists for " + str(logdate) + "."
+        return
+
+    log_data = logfile_io.load_logfile(logdate)
+
+    all_hours = sum([x.duration() for x in log_data.entries])
+    work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] == '*'])
+    non_work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] != '*'])
+
+    print logdate
+    print "All Hours: " + str(all_hours)
+    print "Non-Work Hours: " + str(work_hours)
+    print "Work Hours: " + str(non_work_hours)
+
+
+@entry_point.command()
+@click.option('--previous', '-p', type=int, help='Use the logfile X days in the past.')
+def count_tasks(previous):
+    """Print number of tasks logged for the given day."""
+    if previous:
+        logdate = (date.today() - timedelta(days=previous))
+    else:
+        logdate = date.today()
+
+    if not logfile_io.exists(logdate):
+        print "No logfile exists for " + str(logdate) + "."
+        return
+
+    log_data = logfile_io.load_logfile(logdate)
+
+    print len(log_data.entries)
+
+
+@entry_point.command()
+def list(): #pylint: disable=redefined-builtin
+    """List existing logfiles, along with how many days back it is (for use with `-p`)"""
+    log_file_directory = logtime_config.get_option('DEFAULT', 'logfile_directory')
+    file_names = os.listdir(log_file_directory)
+
+    for name in file_names:
+        file_date = datetime.strptime(name, '%Y-%m-%d.md')
+
+        delta = datetime.today() - file_date
+
+        print '{date} - {days}'.format(days=delta.days, date=name)
+
+if __name__ == '__main__':
+    entry_point() #pylint: disable=no-value-for-parameter

@@ -12,7 +12,7 @@ import logtime_cli.logfile_io as logfile_io
 import logtime_cli.logtime_config as logtime_config
 
 
-@click.group()
+@click.group(context_settings=dict(help_option_names=['-h', '--help']))
 def entry_point():
     """logtime"""
     pass

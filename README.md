@@ -72,6 +72,16 @@ lt -c
 ## Additional options
 - `--pie` will display a pie chart of today's time log
 
+## Reporting options
+The `logtime` command group helps gather data.
+
+- Display today's worked hours. (`logtime calc -h`)
+- Count the number of tasks on a given day (`logtime count_tasks -h`)
+- Display all logfiles (useful for using `lt -p` to open logfiles) (`logtime list -h`)
+- Print the `## Summary` section from every day of this week (`logtime summarize_week -h`)
+
+*Protip: `logtime summarize_week | clip` is very useful*
+
 ## Configuration
 In your installation directory (with pip, `C:\<PATH_TO_PYTHON>\Lib\site-packages\logtime-cli`), you'll find a file `config/config-default.ini`.
 

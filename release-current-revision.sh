@@ -16,7 +16,7 @@ if [ $(git tag -l "v$RELEASE_VERSION") ]; then
 fi
 
 # Release to PyPi
-python setup.py register sdist upload
+python setup.py sdist upload
 
 # Git tag
 git tag "v$RELEASE_VERSION"

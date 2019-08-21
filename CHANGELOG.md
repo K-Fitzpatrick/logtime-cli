@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- `logtime list` now works perfectly fine when there are other random files/folders in the logfile directory
 
 ## 1.4.1 - 2019-08-21
 ### Added

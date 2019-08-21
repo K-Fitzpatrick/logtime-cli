@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='logtime-cli',
     version='1.3.1',
-    scripts=['lt'],
+    scripts=['lt, logtime'],
     packages=find_packages(),
     description='CLI utility for logging the time you spend on things',
     author='Kyle Fitzpatrick',

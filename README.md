@@ -78,4 +78,5 @@ Copy that file to `config/config-user.ini`, and change that file as needed.
 
 ```
 eval "$(_LT_COMPLETE=source lt)"
+eval "$(_LOGTIME_COMPLETE=source logtime)"
 ```

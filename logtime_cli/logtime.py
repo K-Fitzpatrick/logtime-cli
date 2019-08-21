@@ -47,6 +47,24 @@ def continue_last_entry():
     print logfile_io.get_last_entry_line(logfile_date)
 
 
+def recalculate():
+    """
+    Recalulate each of the days time entries
+    """
+    logfile_date = date.today()
+
+    if not logfile_io.exists(logfile_date):
+        raise ValueError('There is no time entry to recalculate')
+
+    log_data = logfile_io.load_logfile(logfile_date)
+
+    if not log_data.entries:
+        raise ValueError('There is no time entry to recalculate')
+
+    logfile_io.save_logfile(logfile_date, log_data)
+    print 'Recalulated'
+
+
 def log_time(task_entry, start=None, end=None):
     """
     Log `task_entry` to today's logfile.

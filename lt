@@ -9,7 +9,7 @@ import re
 from datetime import date, timedelta, datetime
 import click
 import logtime_cli.logfile_io as logfile_io
-from logtime_cli.logtime import log_time, open_logfile_for_date, continue_last_entry
+from logtime_cli.logtime import log_time, open_logfile_for_date, continue_last_entry, recalculate
 from logtime_cli.logtime_config import open_user_config, get_option
 from logtime_cli.statistics import logfile_pie
 
@@ -70,6 +70,14 @@ def _continue(ctx, param, value):
     ctx.exit()
 
 
+def _recalc(ctx, param, value):
+    del param
+    if not value:
+        return
+    recalculate()
+    ctx.exit()
+
+
 def _open_user_config(ctx, param, value):
     del param
     if not value:
@@ -107,6 +115,9 @@ def _open_pie(ctx, param, value):
 @click.option('--continue', '-c', is_flag=True, callback=_continue, expose_value=False,
               is_eager=True,
               help='Continue the most recent entry by updating the end date and exit.')
+@click.option('--recalc', '-r', is_flag=True, callback=_recalc, expose_value=False,
+              is_eager=True,
+              help='Recalulate each of the days time entries.')
 @click.option('--config', is_flag=True, callback=_open_user_config, expose_value=False,
               is_eager=True, help='Open user config file and exit.')
 @click.option('--dir', is_flag=True, callback=_open_logfile_directory, expose_value=False,

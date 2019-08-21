@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-## 1.4.0 - 2019-08-21
+## 1.4.1 - 2019-08-21
 ### Added
 - CLI command group `logtime`
 - CLI command `logtime calc`, for calculating and displaying your logged time for the day

@@ -11,6 +11,13 @@ Meant to track what you just finished working on, and deliver readable text outp
 pip install logtime-cli
 ```
 
+## Tests
+To run tests, `pip install nose` and run
+
+```
+nosetests
+```
+
 ## Help
 ```
 lt --help

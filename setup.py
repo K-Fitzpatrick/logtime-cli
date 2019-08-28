@@ -14,5 +14,6 @@ setup(
     install_requires=[
         'click==6.7',
         'matplotlib==2.1.0',
+        'future==0.17.1',
     ],
 )

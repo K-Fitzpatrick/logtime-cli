@@ -6,7 +6,6 @@ Responsibilities:
 from builtins import str
 from builtins import object
 from datetime import date, datetime
-import string
 import re
 from collections import namedtuple
 import logtime_cli.logfile_notes_data as logfile_notes_data

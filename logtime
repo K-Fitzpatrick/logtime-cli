@@ -19,7 +19,6 @@ import logtime_cli.logtime_config as logtime_config
 @click.group(context_settings=dict(help_option_names=['-h', '--help']))
 def entry_point():
     """logtime"""
-    pass
 
 
 @entry_point.command()
@@ -86,7 +85,8 @@ def list(): #pylint: disable=redefined-builtin
         print('{date} - {days}'.format(days=delta.days, date=name))
 
 @entry_point.command()
-@click.option('--previous', '-p', type=int, help='Use the week X weeks in the past; Monday begins the week.')
+@click.option('--previous', '-p', type=int,
+              help='Use the week X weeks in the past; Monday begins the week.')
 def summarize_week(previous):
     """Print Summary section for every day of the chosen week."""
     if previous:
@@ -110,8 +110,9 @@ def summarize_week(previous):
 
             summaries = [x.full_text for x in notes_sections if x.name == 'Summary']
             if len(summaries) > 1:
-                raise NotImplementedError('Found more than one Summary for {}. Combine them.'.format(day))
-            elif len(summaries) == 1:
+                raise NotImplementedError(
+                    'Found more than one Summary for {}. Combine them.'.format(day))
+            if len(summaries) == 1:
                 print('## {}'.format(day))
                 print(summaries[0])
                 print('')

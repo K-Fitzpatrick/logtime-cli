@@ -16,9 +16,9 @@ from logtime_cli.logtime_config import open_user_config, get_option
 from logtime_cli.statistics import logfile_pie
 
 def _convert_time_of_day(time_of_day):
-    if time_of_day == 'A' or time_of_day == 'a':
+    if time_of_day in ('A', 'a'):
         return "AM"
-    if time_of_day == 'P' or time_of_day == 'p':
+    if time_of_day in ('P', 'p'):
         return "PM"
     return None
 
@@ -38,10 +38,12 @@ def _get_time_from_argument(arg_time):
     if military_time_match:
         output_date = datetime.strptime(time_string, "%H%M")
         return output_date.time()
-    elif standard_time_match:
+
+    if standard_time_match:
         meridiem = standard_time_match.group(3)
         output_date = datetime.strptime(time_string + _convert_time_of_day(meridiem), "%I%M%p")
         return output_date.time()
+
     return None
 
 

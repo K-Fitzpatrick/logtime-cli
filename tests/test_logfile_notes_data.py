@@ -1,9 +1,15 @@
+"""
+Test the Notes portion of the logfile_data module
+"""
+
 import unittest
 import logtime_cli.logfile_notes_data as logfile_notes_data
 
 
-class Test_Notes(unittest.TestCase):
+class TestNotes(unittest.TestCase):
+    """Test the processing of the Notes section of logfiles"""
     def test_basic_notes(self):
+        """A simple section"""
         test_notes = '\n'.join([
             "First line",
             "",
@@ -18,6 +24,7 @@ class Test_Notes(unittest.TestCase):
         self.assertEqual(len(notes.get_subsections()), 0)
 
     def test_single_layer(self):
+        """Add a couple Header2 sections"""
         test_notes = '\n'.join([
             "First line",
             "## Section",
@@ -42,6 +49,7 @@ class Test_Notes(unittest.TestCase):
         self.assertEqual(sections[1].get_text(), "line\n")
 
     def test_nested_sections(self):
+        """Test several nested section groups"""
         test_notes = '\n'.join([
             "## Section1.0",
             "line1.0",
@@ -91,6 +99,7 @@ class Test_Notes(unittest.TestCase):
 
 
     def test_deeply_nested_sections(self):
+        """Test a deeply nested section"""
         test_notes = '\n'.join([
             "## Section1",
             "### Section2",

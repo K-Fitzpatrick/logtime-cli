@@ -24,6 +24,7 @@ def get_last_entry_line(logfile_date):
     file_path = get_file_path_for_date(logfile_date)
 
     logfile = open(file_path, "a+")
+    logfile.seek(0)
     lines = logfile.readlines()
     logfile.close()
 

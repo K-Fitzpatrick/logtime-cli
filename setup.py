@@ -13,7 +13,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'click==6.7',
-        'matplotlib==2.1.0',
+        'matplotlib==2.2.4',
         'future==0.17.1',
     ],
 )

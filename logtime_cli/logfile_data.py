@@ -3,7 +3,11 @@ Responsibilities:
     Represent logfile data
     Convert to/from object representation
 """
+from __future__ import division
 
+from builtins import str
+from builtins import object
+from past.utils import old_div
 from datetime import date, datetime
 import string
 import re
@@ -67,7 +71,7 @@ class Entry(object):
         """Return duration of the Entry in seconds"""
         delta = (datetime.combine(date.min, self.end_time)
                  - datetime.combine(date.min, self.start_time))
-        return delta.total_seconds() / 3600
+        return old_div(delta.total_seconds(), 3600)
 
 
 def _get_notes_text(logfile_text):

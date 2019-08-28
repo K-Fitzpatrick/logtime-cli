@@ -6,6 +6,7 @@ Allows one to gather information about the Notes section of a logfile.
 This class assumes these sections are written using markdown-style headers.
 """
 
+from builtins import object
 import re
 
 class LogfileNotesSection(object):

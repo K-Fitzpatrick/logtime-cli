@@ -5,6 +5,8 @@ CLI utility for logging the time you spend on things.
 """
 from __future__ import print_function
 
+from builtins import str
+from builtins import range
 from datetime import date, datetime, timedelta
 import os
 import re
@@ -94,7 +96,7 @@ def summarize_week(previous):
 
     first_day_delta = 0 - logdate.weekday() # 0 is Monday
     last_day_delta = 7 - logdate.weekday() # 7 is the number of weekdays
-    week_range = range(first_day_delta, last_day_delta)
+    week_range = list(range(first_day_delta, last_day_delta))
 
     # Center the list on this week; start on Monday
     weekdays = [(logdate + timedelta(days=x)) for x in week_range]

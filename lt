@@ -5,6 +5,7 @@ CLI utility for logging the time you spend on things.
 """
 from __future__ import print_function
 
+from builtins import str
 import os
 import re
 from datetime import date, timedelta, datetime

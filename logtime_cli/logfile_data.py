@@ -95,7 +95,7 @@ def _get_timelog_entries(logfile_text):
     for current_line in timelog_section.splitlines():
         match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", current_line)
         if match:
-            items = [item.strip() for item in string.split(current_line, '|')]
+            items = [item.strip() for item in current_line.split('|')]
             entry = Entry(
                 start_time=datetime.strptime(items[1], OUTPUT_TIME_FORMAT).time(),
                 end_time=datetime.strptime(items[2], OUTPUT_TIME_FORMAT).time(),

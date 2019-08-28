@@ -13,12 +13,12 @@ test_text = '\n'.join([
     "",
     "|\tStart\t|\tEnd\t|\tTask\t|\tLength\t|",
     "|\t---\t|\t---\t|\t---\t|\t---\t|",
-    "|\t11:45 AM\t|\t12:05 PM\t|\tlogtime: pie charts\t|\t0.3333333333333333\t|",
+    "|\t11:45 AM\t|\t12:05 PM\t|\tlogtime: pie charts\t|\t0.3333333333\t|",
     "|\t12:05 PM\t|\t12:17 PM\t|\tlogtime: requirements\t|\t0.2\t|",
-    "|\t12:17 PM\t|\t02:00 PM\t|\tlogtime: refactor design\t|\t1.7166666666666666\t|",
+    "|\t12:17 PM\t|\t02:00 PM\t|\tlogtime: refactor design\t|\t1.7166666667\t|",
     "|\t02:00 PM\t|\t02:15 PM\t|\tid verification form\t|\t0.25\t|",
-    "|\t02:15 PM\t|\t02:44 PM\t|\tlogtime: logtime parser\t|\t0.48333333333333334\t|",
-    "|\t02:44 PM\t|\t04:10 PM\t|\tlogtime: pie charts\t|\t1.4333333333333333\t|",
+    "|\t02:15 PM\t|\t02:44 PM\t|\tlogtime: logtime parser\t|\t0.4833333333\t|",
+    "|\t02:44 PM\t|\t04:10 PM\t|\tlogtime: pie charts\t|\t1.4333333333\t|",
     "",
 ])
 

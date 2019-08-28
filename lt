@@ -3,6 +3,7 @@
 CLI utility for logging the time you spend on things.
     Usage: `lt --help`
 """
+from __future__ import print_function
 
 import os
 import re
@@ -51,7 +52,7 @@ def _open_previous(ctx, param, value):
     try:
         open_logfile_for_date(previous_date)
     except WindowsError:
-        print "No logfile exists for " + str(previous_date) + "."
+        print("No logfile exists for " + str(previous_date) + ".")
 
     ctx.exit()
 

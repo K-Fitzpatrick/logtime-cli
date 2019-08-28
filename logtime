@@ -3,6 +3,7 @@
 CLI utility for logging the time you spend on things.
     Usage: `logtime --help`
 """
+from __future__ import print_function
 
 from datetime import date, datetime, timedelta
 import os
@@ -32,7 +33,7 @@ def calc(previous):
         logdate = date.today()
 
     if not logfile_io.exists(logdate):
-        print "No logfile exists for " + str(logdate) + "."
+        print("No logfile exists for " + str(logdate) + ".")
         return
 
     log_data = logfile_io.load_logfile(logdate)
@@ -41,10 +42,10 @@ def calc(previous):
     work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] == '*'])
     non_work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] != '*'])
 
-    print logdate
-    print "All Hours: " + str(all_hours)
-    print "Non-Work Hours: " + str(work_hours)
-    print "Work Hours: " + str(non_work_hours)
+    print(logdate)
+    print("All Hours: " + str(all_hours))
+    print("Non-Work Hours: " + str(work_hours))
+    print("Work Hours: " + str(non_work_hours))
 
 
 @entry_point.command()
@@ -57,12 +58,12 @@ def count_tasks(previous):
         logdate = date.today()
 
     if not logfile_io.exists(logdate):
-        print "No logfile exists for " + str(logdate) + "."
+        print("No logfile exists for " + str(logdate) + ".")
         return
 
     log_data = logfile_io.load_logfile(logdate)
 
-    print len(log_data.entries)
+    print(len(log_data.entries))
 
 
 @entry_point.command()
@@ -80,7 +81,7 @@ def list(): #pylint: disable=redefined-builtin
 
         delta = datetime.today() - file_date
 
-        print '{date} - {days}'.format(days=delta.days, date=name)
+        print('{date} - {days}'.format(days=delta.days, date=name))
 
 @entry_point.command()
 @click.option('--previous', '-p', type=int, help='Use the week X weeks in the past; Monday begins the week.')
@@ -108,9 +109,9 @@ def summarize_week(previous):
             if len(summaries) > 1:
                 raise NotImplementedError('Found more than one Summary for {}. Combine them.'.format(day))
             elif len(summaries) == 1:
-                print '## {}'.format(day)
-                print summaries[0]
-                print ''
+                print('## {}'.format(day))
+                print(summaries[0])
+                print('')
 
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

@@ -71,7 +71,7 @@ class Entry(object):
 
 
 def _get_notes_text(logfile_text):
-    match = re.findall("# Notes:\n(.*?)\n\n# Time log:", logfile_text, re.DOTALL)
+    match = re.findall("# Notes:\n(.*?)\n# Time log:", logfile_text, re.DOTALL)
     if match:
         return match[0]
     return None
@@ -134,7 +134,7 @@ def format_entry(entry):
 def get_logfile_text(logfile):
     """Converts the given Logfile object to formatted text, and returns it as a giant string"""
     logfile_text = "# Notes:\n"
-    logfile_text += logfile.notes + "\n"
+    logfile_text += logfile.notes
     logfile_text += "\n"
     logfile_text += ("# Time log:\n\n")
     logfile_text += (_format_entry("Start", "End", "Task", "Length"))

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 - Properly restrict installation to `Python==2.*`
+- Commands that interact with the "Notes" section now work properly when there is no extra newline between the last line of text and the "Time log" section header
 
 ## 1.4.2 - 2019-08-21
 ### Fixed

@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.5.1 - 2019-08-29
 ### Fixed
 - Properly restrict installation to Python 2 or 3
 

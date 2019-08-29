@@ -3,7 +3,10 @@
 CLI utility for logging the time you spend on things.
     Usage: `logtime --help`
 """
+from __future__ import print_function
 
+from builtins import str
+from builtins import range
 from datetime import date, datetime, timedelta
 import os
 import re
@@ -16,7 +19,6 @@ import logtime_cli.logtime_config as logtime_config
 @click.group(context_settings=dict(help_option_names=['-h', '--help']))
 def entry_point():
     """logtime"""
-    pass
 
 
 @entry_point.command()
@@ -32,7 +34,7 @@ def calc(previous):
         logdate = date.today()
 
     if not logfile_io.exists(logdate):
-        print "No logfile exists for " + str(logdate) + "."
+        print("No logfile exists for " + str(logdate) + ".")
         return
 
     log_data = logfile_io.load_logfile(logdate)
@@ -41,10 +43,10 @@ def calc(previous):
     work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] == '*'])
     non_work_hours = sum([x.duration() for x in log_data.entries if x.task[:1] != '*'])
 
-    print logdate
-    print "All Hours: " + str(all_hours)
-    print "Non-Work Hours: " + str(work_hours)
-    print "Work Hours: " + str(non_work_hours)
+    print(logdate)
+    print("All Hours: " + str(all_hours))
+    print("Non-Work Hours: " + str(work_hours))
+    print("Work Hours: " + str(non_work_hours))
 
 
 @entry_point.command()
@@ -57,12 +59,12 @@ def count_tasks(previous):
         logdate = date.today()
 
     if not logfile_io.exists(logdate):
-        print "No logfile exists for " + str(logdate) + "."
+        print("No logfile exists for " + str(logdate) + ".")
         return
 
     log_data = logfile_io.load_logfile(logdate)
 
-    print len(log_data.entries)
+    print(len(log_data.entries))
 
 
 @entry_point.command()
@@ -80,10 +82,11 @@ def list(): #pylint: disable=redefined-builtin
 
         delta = datetime.today() - file_date
 
-        print '{date} - {days}'.format(days=delta.days, date=name)
+        print('{date} - {days}'.format(days=delta.days, date=name))
 
 @entry_point.command()
-@click.option('--previous', '-p', type=int, help='Use the week X weeks in the past; Monday begins the week.')
+@click.option('--previous', '-p', type=int,
+              help='Use the week X weeks in the past; Monday begins the week.')
 def summarize_week(previous):
     """Print Summary section for every day of the chosen week."""
     if previous:
@@ -93,6 +96,7 @@ def summarize_week(previous):
 
     first_day_delta = 0 - logdate.weekday() # 0 is Monday
     last_day_delta = 7 - logdate.weekday() # 7 is the number of weekdays
+
     week_range = range(first_day_delta, last_day_delta)
 
     # Center the list on this week; start on Monday
@@ -106,11 +110,12 @@ def summarize_week(previous):
 
             summaries = [x.full_text for x in notes_sections if x.name == 'Summary']
             if len(summaries) > 1:
-                raise NotImplementedError('Found more than one Summary for {}. Combine them.'.format(day))
-            elif len(summaries) == 1:
-                print '## {}'.format(day)
-                print summaries[0]
-                print ''
+                raise NotImplementedError(
+                    'Found more than one Summary for {}. Combine them.'.format(day))
+            if len(summaries) == 1:
+                print('## {}'.format(day))
+                print(summaries[0])
+                print('')
 
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

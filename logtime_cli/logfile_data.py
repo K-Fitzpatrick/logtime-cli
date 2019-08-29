@@ -3,9 +3,9 @@ Responsibilities:
     Represent logfile data
     Convert to/from object representation
 """
-
+from builtins import str
+from builtins import object
 from datetime import date, datetime
-import string
 import re
 from collections import namedtuple
 import logtime_cli.logfile_notes_data as logfile_notes_data
@@ -67,7 +67,7 @@ class Entry(object):
         """Return duration of the Entry in seconds"""
         delta = (datetime.combine(date.min, self.end_time)
                  - datetime.combine(date.min, self.start_time))
-        return delta.total_seconds() / 3600
+        return round(delta.total_seconds() / 3600, 10)
 
 
 def _get_notes_text(logfile_text):
@@ -91,7 +91,7 @@ def _get_timelog_entries(logfile_text):
     for current_line in timelog_section.splitlines():
         match = re.findall("([0-1]*[0-9]:[0-6][0-9] [AP]M)", current_line)
         if match:
-            items = [item.strip() for item in string.split(current_line, '|')]
+            items = [item.strip() for item in current_line.split('|')]
             entry = Entry(
                 start_time=datetime.strptime(items[1], OUTPUT_TIME_FORMAT).time(),
                 end_time=datetime.strptime(items[2], OUTPUT_TIME_FORMAT).time(),

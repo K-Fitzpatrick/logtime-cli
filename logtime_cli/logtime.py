@@ -1,6 +1,7 @@
 """
 Locate and manipulate logfiles.
 """
+from __future__ import print_function
 
 from datetime import date, datetime
 from logtime_cli.logtime_config import get_option
@@ -44,7 +45,7 @@ def continue_last_entry():
     log_data.entries[-1].end_time = current_time
 
     logfile_io.save_logfile(logfile_date, log_data)
-    print logfile_io.get_last_entry_line(logfile_date)
+    print(logfile_io.get_last_entry_line(logfile_date))
 
 
 def recalculate():
@@ -62,7 +63,7 @@ def recalculate():
         raise ValueError('There is no time entry to recalculate')
 
     logfile_io.save_logfile(logfile_date, log_data)
-    print 'Recalulated'
+    print('Recalulated')
 
 
 def log_time(task_entry, start=None, end=None):
@@ -94,4 +95,4 @@ def log_time(task_entry, start=None, end=None):
     log_data.entries.append(logfile_data.Entry(start_time, end_time, task_entry))
 
     logfile_io.save_logfile(date.today(), log_data)
-    print logfile_io.get_last_entry_line(logfile_date)
+    print(logfile_io.get_last_entry_line(logfile_date))

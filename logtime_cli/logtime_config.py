@@ -2,16 +2,18 @@
 Manipulate and manage configuration files.
 """
 
-import ConfigParser
+from future import standard_library
+standard_library.install_aliases()
+import configparser
 from os import path, system
 
 DEFAULT_CONFIG_FILE = path.dirname(__file__) + '/config/config-default.ini'
 USER_CONFIG_FILE = path.dirname(__file__) + '/config/config-user.ini'
 
-_DEFAULT_CONFIG = ConfigParser.ConfigParser()
+_DEFAULT_CONFIG = configparser.ConfigParser()
 _DEFAULT_CONFIG.read(DEFAULT_CONFIG_FILE)
 
-_USER_CONFIG = ConfigParser.ConfigParser()
+_USER_CONFIG = configparser.ConfigParser()
 _USER_CONFIG.read(USER_CONFIG_FILE)
 
 

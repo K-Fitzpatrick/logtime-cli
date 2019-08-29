@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='logtime-cli',
-    version='1.4.3',
+    version='1.5.0',
     python_requires='==2.*,==3.*',
     scripts=['lt', 'logtime'],
     packages=find_packages(),

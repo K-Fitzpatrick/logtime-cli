@@ -83,12 +83,17 @@ The `logtime` command group helps gather data.
 *Protip: `logtime summarize_week | clip` is very useful*
 
 ## Configuration
-In your installation directory (with pip, `C:\<PATH_TO_PYTHON>\Lib\site-packages\logtime-cli`), you'll find a file `config/config-default.ini`.
-
-Copy that file to `config/config-user.ini`, and change that file as needed.
+```
+lt --config
+```
 
 - **`new_day_start_time`** affects what time each day is assumed to start at for the first call of `lt something`. Example: `10:00 AM`
 - **`logfile_directory`** is where the logtime files get stored. Works on relative and absolute paths. Example: `C:\...\Dropbox\logtime-logs`
+
+### Manually find config
+In your installation directory (with pip, `C:\<PATH_TO_PYTHON>\Lib\site-packages\logtime-cli`), you'll find a file `config/config-default.ini`.
+
+Copy that file to `config/config-user.ini`, and change that file as needed.
 
 ## Bash autocomplete
 `click` builds an autocomplete script for us. To make use it, put the following in your .bashrc:

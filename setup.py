@@ -14,6 +14,9 @@ setup(
     install_requires=[
         'click==6.7',
         'matplotlib==2.2.4',
+
+        # Python 2/3 compatibility
         'future==0.17.1',
+        'configparser==3.8.1',
     ],
 )

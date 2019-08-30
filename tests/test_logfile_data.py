@@ -27,7 +27,7 @@ TEST_TEXT = '\n'.join([
 ])
 
 TEST_LOGFILE = logfile_data.Logfile(
-    notes="meow\nmeow\nmeow\nmeow",
+    notes="meow\nmeow\nmeow\nmeow\n",
     entries=[
         logfile_data.Entry(start_time=datetime.strptime("11:45 AM", "%I:%M %p").time(),
                            end_time=datetime.strptime("12:05 PM", "%I:%M %p").time(),

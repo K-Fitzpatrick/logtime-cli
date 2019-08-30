@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.5.2 - 2019-08-30
 ### Fixed
 - Support for some early versions of Python 2.6/2.7 restored
 

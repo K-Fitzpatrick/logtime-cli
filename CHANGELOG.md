@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- CLI command `logtime section_report`, for printing all sections of a given name throughout your whole log history. Useful for "Summary" sections, or "Weekly report" sections. Doesn't support sections that appear in multiples in the same logfile.
+
 ### Fixed
 - Support special characters by opening files in UTF-8 encoding
 

@@ -117,5 +117,75 @@ def summarize_week(previous):
                 print(summaries[0])
                 print('')
 
+
+def _get_sections_at_depth(notes_sections, current_depth, depth_to_search):
+    """Only get sections at *exactly* the given depth_to_search"""
+    sections_at_depth = []
+    if current_depth == depth_to_search:
+        sections_at_depth = notes_sections
+    else:
+        for section in notes_sections:
+            subsections = section.get_subsections()
+            sections_at_depth.extend(
+                _get_sections_at_depth(subsections, current_depth+1, depth_to_search)
+            )
+    return sections_at_depth
+
+def _get_sections_all_depths(notes_sections):
+    """Get every single section, at any depth"""
+    sections = notes_sections
+    for section in notes_sections:
+        subsections = section.get_subsections()
+        sections.extend(
+            _get_sections_all_depths(subsections)
+        )
+    return sections
+
+
+@entry_point.command()
+@click.argument('section_name')
+@click.option('--depth', '-d', type=int,
+              help='Depth of subsection to search.'
+              ' Will only search this depth. Default 1.')
+@click.option('--all-depths', '-a', is_flag=True,
+              help='Indicates searching all depths at once.'
+              ' Useful for finding sections at unknown depths.')
+def section_report(section_name, depth, all_depths):
+    """
+    Find all instances of the given section_name at the given depth, for all logfiles.
+    Print that section's contents.
+    """
+    if not depth:
+        depth = 1
+
+    log_file_directory = logtime_config.get_option('DEFAULT', 'logfile_directory')
+    iso_date_regex = r'[0-9]{4}-[0-9]{2}-[0-9]{2}\.md'
+
+    file_names = [f for f in os.listdir(log_file_directory)
+                  if re.match(iso_date_regex, f)
+                  and not os.path.isdir(os.path.join(log_file_directory, f))]
+
+    for name in file_names:
+        file_date = datetime.strptime(name, '%Y-%m-%d.md').date()
+        log_data = logfile_io.load_logfile(file_date)
+        notes = logfile_data.get_notes_data(log_data)
+        notes_sections = notes.get_subsections()
+
+        if all_depths:
+            sections_to_search = _get_sections_all_depths(notes_sections)
+        else:
+            sections_to_search = _get_sections_at_depth(notes_sections, 1, depth)
+
+        found_sections = [x.full_text for x in sections_to_search if x.name == section_name]
+
+        if len(found_sections) > 1:
+            raise NotImplementedError(
+                'Found two or more Sections with that name for {}. Combine them.'.format(file_date))
+        if len(found_sections) == 1:
+            print('## {}'.format(file_date))
+            print(found_sections[0])
+            print('')
+
+
 if __name__ == '__main__':
     entry_point() #pylint: disable=no-value-for-parameter

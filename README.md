@@ -79,8 +79,9 @@ The `logtime` command group helps gather data.
 - Count the number of tasks on a given day (`logtime count_tasks -h`)
 - Display all logfiles (useful for using `lt -p` to open logfiles) (`logtime list -h`)
 - Print the `## Summary` section from every day of this week (`logtime summarize_week -h`)
-
-*Protip: `logtime summarize_week | clip` is very useful*
+    - *`logtime summarize_week | clip` is very useful*
+- Print all sections of a given name throughout your entire log history (`logtime section_report -h`)
+    - *`logtime section_report "Summary" | less`*
 
 ## Configuration
 ```

@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Support special characters by opening files in UTF-8 encoding
 
 ## 1.5.2 - 2019-08-30
 ### Fixed

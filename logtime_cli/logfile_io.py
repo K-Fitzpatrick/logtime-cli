@@ -23,7 +23,7 @@ def get_last_entry_line(logfile_date):
     """Returns the last entry line of the logfile, formatted as-is"""
     file_path = get_file_path_for_date(logfile_date)
 
-    logfile = open(file_path, "a+", encoding='utf-8')
+    logfile = open(file_path, "a+")
     logfile.seek(0)
     lines = logfile.readlines()
     logfile.close()
@@ -54,7 +54,7 @@ def exists(logfile_date):
 def load_logfile(logfile_date):
     """Opens the logfile at the given date, and returns a Logfile object"""
     file_path = get_file_path_for_date(logfile_date)
-    logfile_text = open(file_path, encoding='utf-8').read()
+    logfile_text = open(file_path).read()
     return logfile_data.get_logfile(logfile_text)
 
 
@@ -63,6 +63,6 @@ def save_logfile(logfile_date, log_data):
     file_path = get_file_path_for_date(logfile_date)
     logfile_text = logfile_data.get_logfile_text(log_data)
 
-    logfile = open(file_path, "w+", encoding='utf-8')
+    logfile = open(file_path, "w+")
     logfile.write(logfile_text)
     logfile.close()

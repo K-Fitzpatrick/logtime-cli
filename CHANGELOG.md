@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Removed
+- Support special characters by opening files in UTF-8 encoding; this unintentionally dropped support for Python <2.6 in v1.6.0 and will be added back in a later version
+
+### Fixed
+- Support for Python 2
 
 ## 1.6.0 - 2019-09-04
 ### Added

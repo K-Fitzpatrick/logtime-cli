@@ -1,9 +1,13 @@
+"""
+setup.py
+"""
+
 from setuptools import setup, find_packages
 
 setup(
     name='logtime-cli',
     version='1.6.1',
-    python_requires='>=2,<4',
+    python_requires='>=2.6,<4',
     scripts=['lt', 'logtime'],
     packages=find_packages(),
     description='CLI utility for logging the time you spend on things',

@@ -20,7 +20,7 @@ setup(
         'matplotlib==2.2.4',
 
         # Python 2/3 compatibility
-        'future==0.17.1',
+        'future==1.0.0',
         'configparser==3.8.1',
     ],
 )
